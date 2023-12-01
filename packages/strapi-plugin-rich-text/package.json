@@ -1,0 +1,54 @@
+{
+  "name": "strapi-plugin-rich-text",
+  "version": "0.0.0",
+  "description": "A rich text editor that replaces the default WYSIWYG editor in Strapi",
+  "strapi": {
+    "name": "strapi-plugin-rich-text",
+    "displayName": "Rich Text",
+    "description": "A rich text editor that replaces the default WYSIWYG editor",
+    "kind": "plugin"
+  },
+  "dependencies": {
+    "@strapi/design-system": "^1.6.3",
+    "@strapi/helper-plugin": "^4.6.0",
+    "@strapi/icons": "^1.6.3"
+  },
+  "devDependencies": {
+    "@strapi/typescript-utils": "^4.6.0",
+    "@types/react": "^17.0.53",
+    "@types/react-dom": "^18.0.28",
+    "@types/react-router-dom": "^5.3.3",
+    "@types/styled-components": "^5.1.26",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^5.3.4",
+    "styled-components": "^5.3.6",
+    "typescript": "5.0.4"
+  },
+  "peerDependencies": {
+    "@strapi/strapi": "^4.0.0",
+    "react": "^17.0.0 || ^18.0.0",
+    "react-dom": "^17.0.0 || ^18.0.0",
+    "react-router-dom": "^5.2.0",
+    "styled-components": "^5.2.1"
+  },
+  "author": {
+    "name": "Konstantin Münster"
+  },
+  "maintainers": [
+    {
+      "name": "Konstantin Münster",
+      "email": "mail@konstantin.digital",
+      "url": "https://konstantin.digital"
+    }
+  ],
+  "engines": {
+    "node": ">=18.0.0 <=20.x.x",
+    "npm": ">=6.0.0"
+  },
+  "scripts": {
+    "dev": "tsc -p tsconfig.server.json -w",
+    "build": "tsc -p tsconfig.server.json"
+  },
+  "license": "MIT"
+}
