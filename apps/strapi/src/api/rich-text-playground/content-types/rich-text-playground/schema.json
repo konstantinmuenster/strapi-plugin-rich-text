@@ -1,0 +1,19 @@
+{
+  "kind": "singleType",
+  "collectionName": "rich_text_playgrounds",
+  "info": {
+    "singularName": "rich-text-playground",
+    "pluralName": "rich-text-playgrounds",
+    "displayName": "Rich Text Playground",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "playground": {
+      "type": "richtext"
+    }
+  }
+}
