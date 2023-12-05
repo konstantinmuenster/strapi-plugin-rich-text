@@ -3,11 +3,14 @@ import { prefixPluginTranslations } from "@strapi/helper-plugin";
 import pluginPkg from "../../package.json";
 import pluginId from "./pluginId";
 import Initializer from "./components/Initializer";
+import RichText from "./components/RichText";
 
 const name = pluginPkg.strapi.name;
 
 export default {
   register(app: any) {
+    app.addFields({ type: "wysiwyg", Component: RichText });
+
     app.registerPlugin({
       id: pluginId,
       initializer: Initializer,
