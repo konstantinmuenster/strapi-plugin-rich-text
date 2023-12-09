@@ -6,6 +6,7 @@ import { Typography } from "@strapi/design-system/Typography";
 import { useIntl } from "react-intl";
 
 import Editor, { RichTextContent } from "./Editor";
+import { createHTMLFromMarkdown } from "../../lib/markdown";
 
 interface RichTextProps {
   error: string;
@@ -58,7 +59,7 @@ export default function RichText({
     try {
       return (JSON.parse(value || "") as RichTextContent).json || "";
     } catch {
-      return value ?? "";
+      return value ? createHTMLFromMarkdown(value) : "";
     }
   }, []);
 

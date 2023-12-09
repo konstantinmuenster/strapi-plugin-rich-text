@@ -1,0 +1,18 @@
+{
+  "kind": "singleType",
+  "collectionName": "markdown_playgrounds",
+  "info": {
+    "singularName": "markdown-playground",
+    "pluralName": "markdown-playgrounds",
+    "displayName": "Markdown Playground"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "markdown": {
+      "type": "richtext"
+    }
+  }
+}
