@@ -277,7 +277,7 @@ function InsertLinkDialog({ editor, onExit }: DialogProps) {
 
 function InsertYouTubeDialog({ editor, onExit }: DialogProps) {
   const [src, setSrc] = useState("");
-  const [height, setHeight] = useState<number | string>(480);
+  const [height, setHeight] = useState<number | string>(360);
   const [width, setWidth] = useState<number | string>(640);
 
   const onInsert = useCallback(

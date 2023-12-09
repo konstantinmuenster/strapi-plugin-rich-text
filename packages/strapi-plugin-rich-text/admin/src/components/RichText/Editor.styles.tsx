@@ -130,7 +130,19 @@ export const StyledEditor = styled("div")`
     }
 
     [data-youtube-video] {
-      width: min-content;
+      position: relative;
+      width: 100%;
+      height: 0px;
+      padding-bottom: 56.25%;
+
+      > iframe {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 5px;
+      }
     }
   }
 `;
