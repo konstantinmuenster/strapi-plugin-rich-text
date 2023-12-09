@@ -1,10 +1,10 @@
+import { useCallback, useMemo } from "react";
 import { Stack } from "@strapi/design-system/Stack";
 import { Box } from "@strapi/design-system/Box";
 import { Field, FieldLabel } from "@strapi/design-system/Field";
 import { Typography } from "@strapi/design-system/Typography";
-
 import { useIntl } from "react-intl";
-import { useCallback, useEffect, useMemo, useState } from "react";
+
 import Editor, { RichTextContent } from "./Editor";
 
 interface RichTextProps {

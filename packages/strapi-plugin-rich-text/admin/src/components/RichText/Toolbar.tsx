@@ -27,7 +27,9 @@ interface ToolbarProps {
 }
 
 export default function Toolbar({ editor }: ToolbarProps) {
-  const [openDialog, setOpenDialog] = useState<"insertLink" | false>(false);
+  const [openDialog, setOpenDialog] = useState<
+    "insertLink" | "insertYouTube" | false
+  >(false);
 
   if (!editor) {
     return null;
@@ -85,6 +87,15 @@ export default function Toolbar({ editor }: ToolbarProps) {
                     editor.chain().focus().setHorizontalRule().run()
                   }
                 />
+                <IconButton
+                  icon={ExtraIcons.YouTube}
+                  label="YouTube"
+                  className={[
+                    "large-icon",
+                    editor.isActive("youtube") ? "is-active" : "",
+                  ]}
+                  onClick={() => setOpenDialog("insertYouTube")}
+                />
               </IconButtonGroup>
               <IconButtonGroup>
                 <IconButton
@@ -106,6 +117,12 @@ export default function Toolbar({ editor }: ToolbarProps) {
       </StyledToolbar>
       {openDialog === "insertLink" && (
         <InsertLinkDialog editor={editor} onExit={() => setOpenDialog(false)} />
+      )}
+      {openDialog === "insertYouTube" && (
+        <InsertYouTubeDialog
+          editor={editor}
+          onExit={() => setOpenDialog(false)}
+        />
       )}
     </>
   );
@@ -193,13 +210,12 @@ function BlockTypeSelect({ editor }: { editor: Editor }) {
   );
 }
 
-function InsertLinkDialog({
-  editor,
-  onExit,
-}: {
+type DialogProps = {
   editor: Editor;
   onExit: () => void;
-}) {
+};
+
+function InsertLinkDialog({ editor, onExit }: DialogProps) {
   const [href, setHref] = useState<string>("");
   const [newTab, setNewTab] = useState<boolean>(false);
 
@@ -258,3 +274,114 @@ function InsertLinkDialog({
     </Dialog>
   );
 }
+
+function InsertYouTubeDialog({ editor, onExit }: DialogProps) {
+  const [src, setSrc] = useState("");
+  const [height, setHeight] = useState<number | string>(480);
+  const [width, setWidth] = useState<number | string>(640);
+
+  const onInsert = useCallback(
+    ({
+      src,
+      height,
+      width,
+    }: {
+      src: string;
+      height: number | string;
+      width: number | string;
+    }) => {
+      try {
+        editor
+          .chain()
+          .focus()
+          .setYoutubeVideo({
+            src,
+            width: typeof width === "number" ? width : parseInt(width, 10),
+            height: typeof height === "number" ? height : parseInt(height, 10),
+          })
+          .run();
+        onExit();
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    [editor, onExit]
+  );
+
+  return (
+    <Dialog onClose={onExit} title="Insert YouTube embed" isOpen={true}>
+      <DialogBody>
+        <Stack spacing={2}>
+          <TextInput
+            label="YouTube URL"
+            placeholder="Add YouTube URL"
+            name="url"
+            value={src}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              setSrc(e.target.value)
+            }
+            aria-label="YouTube URL"
+          />
+
+          <Stack horizontal={true} spacing={2}>
+            <TextInput
+              label="YouTube Video Width"
+              type="number"
+              placeholder="Add Video Height"
+              name="width"
+              value={width}
+              onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                setWidth(e.target.value)
+              }
+              aria-label="YouTube Video Width"
+            />
+
+            <TextInput
+              label="YouTube Video Height"
+              type="number"
+              placeholder="Add Video Height"
+              name="height"
+              value={height}
+              onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                setHeight(e.target.value)
+              }
+              aria-label="YouTube Video Height"
+            />
+          </Stack>
+        </Stack>
+      </DialogBody>
+      <DialogFooter
+        startAction={
+          <Button onClick={onExit} variant="tertiary">
+            Cancel
+          </Button>
+        }
+        endAction={
+          <Button
+            disabled={src.length === 0}
+            onClick={() => onInsert({ src, width, height })}
+            variant="success-light"
+          >
+            Insert YouTube Embed
+          </Button>
+        }
+      />
+    </Dialog>
+  );
+}
+
+const ExtraIcons = {
+  YouTube: (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="1rem"
+      height="1rem"
+      viewBox="0 0 24 24"
+      fill="none"
+      className="extra-icon"
+    >
+      <path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17" />
+      <path id="bulb" d="m10 15 5-3-5-3z" />
+    </svg>
+  ),
+};

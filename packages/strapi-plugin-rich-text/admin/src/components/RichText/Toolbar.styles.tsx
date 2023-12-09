@@ -11,22 +11,27 @@ export const StyledToolbar = styled("div")`
     color: ${({ theme }) => theme.colors.neutral0};
   }
 
-  &.floating {
-    border: 1px solid ${({ theme }) => theme.colors.neutral200};
-    background: ${({ theme }) => theme.colors.neutral100};
-    box-shadow:
-      rgba(0, 0, 0, 0.1) 0px 10px 15px -3px,
-      rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
+  div[role="combobox"] {
+    min-width: 150px;
   }
 
   button {
     svg {
       height: 100%;
       width: 100%;
+      flex-shrink: 0;
 
       rect {
         height: 3px;
         fill: ${({ theme }) => theme.colors.neutral700};
+      }
+    }
+    svg.extra-icon {
+      height: 125%;
+      width: 125%;
+
+      #bulb {
+        fill: ${({ theme }) => theme.colors.neutral100} !important;
       }
     }
   }

@@ -28,6 +28,7 @@ import { Strike } from "@tiptap/extension-strike";
 import { TextAlign } from "@tiptap/extension-text-align";
 import { Text } from "@tiptap/extension-text";
 import { Underline } from "@tiptap/extension-underline";
+import { Youtube } from "@tiptap/extension-youtube";
 
 import Toolbar from "./Toolbar";
 import { StyledEditor } from "./Editor.styles";
@@ -55,6 +56,7 @@ const extensions: (Extension | Node | Mark)[] = [
   TextAlign,
   Text,
   Underline,
+  Youtube,
 ];
 
 export interface RichTextContent {

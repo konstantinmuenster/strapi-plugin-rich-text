@@ -20,8 +20,20 @@ export const StyledEditor = styled("div")`
     }
 
     .ProseMirror-selectednode {
-      border: 5px solid ${({ theme }) => theme.colors.neutral800};
-      box-sizing: border-box;
+      position: relative;
+      outline: none;
+    }
+
+    .ProseMirror-selectednode:after {
+      content: "";
+      position: absolute;
+      left: -2px;
+      right: -2px;
+      top: -2px;
+      bottom: -2px;
+      border: 2px solid ${({ theme }) => theme.colors.neutral800};
+      pointer-events: none;
+      border-radius: 5px;
     }
 
     strong {
@@ -115,6 +127,10 @@ export const StyledEditor = styled("div")`
       border: 0;
       border-top: 2px solid ${({ theme }) => theme.colors.neutral200};
       margin: 1rem 0;
+    }
+
+    [data-youtube-video] {
+      width: min-content;
     }
   }
 `;
