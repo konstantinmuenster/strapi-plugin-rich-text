@@ -177,6 +177,9 @@ importers:
       '@tiptap/extension-youtube':
         specifier: ^2.1.13
         version: 2.1.13(@tiptap/core@2.1.13)
+      '@tiptap/pm':
+        specifier: ^2.1.13
+        version: 2.1.13
       '@tiptap/react':
         specifier: ^2.1.13
         version: 2.1.13(@tiptap/core@2.1.13)(@tiptap/pm@2.1.13)(react-dom@18.2.0)(react@18.2.0)
