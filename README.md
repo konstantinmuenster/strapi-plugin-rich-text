@@ -1,81 +1,42 @@
-# Turborepo starter
+# 🛹 Strapi Plugin Rich Text
 
-This is an official starter Turborepo.
+#### A WYSIWYG editor for your rich text fields
 
-## Using this example
+This Strapi plugin replaces the Markdown editor with a visual, easy-to-use text editor.
 
-Run the following command:
+- 🧑‍🎓 Write content without needing to know Markdown syntax.
+- 💅 Edit content visually, as in GoogleDocs or Notion.
+- 🧱 Add rich content elements, such as embedded YouTube videos.
+- 📦 Have your existing Markdown content automatically migrated.
 
-```sh
-npx create-turbo@latest
+---
+
+<img alt="strapi-rich-text-plugin" style="border-radius:5px" src="./strapi-plugin-rich-text-cover.png" width="640">
+
+---
+
+## Getting Started
+
+#### Install
+
+```bash
+npm install strapi-plugin-rich-text
+
+# Rebuild your Strapi admin panel
+npm run build
 ```
 
-## What's inside?
+After this, the `Rich Text` plugin should show up in your list of Plugins in the admin panel.
 
-This Turborepo includes the following packages/apps:
+---
 
-### Apps and Packages
+## About
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+<a href="https://www.buymeacoffee.com/kmuenster" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174"></a>
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+Konstantin Münster – [konstantin.digital](https://konstantin.digital)
 
-### Utilities
+Distributed under the [MIT](http://showalicense.com/?fullname=Konstantin+M%C3%BCnster&year=2019#license-mit) license.
+See `LICENSE` for more information.
 
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-```
-cd my-turborepo
-pnpm build
-```
-
-### Develop
-
-To develop all apps and packages, run the following command:
-
-```
-cd my-turborepo
-pnpm dev
-```
-
-### Remote Caching
-
-Turborepo can use a technique known as [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup), then enter the following commands:
-
-```
-cd my-turborepo
-npx turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```
-npx turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks)
-- [Caching](https://turbo.build/repo/docs/core-concepts/caching)
-- [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching)
-- [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
-- [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
-- [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
+[https://github.com/konstantinmuenster](https://github.com/konstantinmuenster)
