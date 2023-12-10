@@ -2,13 +2,14 @@ import styled from "styled-components";
 
 export const StyledEditor = styled("div")`
   margin-top: 10px;
+  background-color: ${({ theme }) => theme.colors.neutral0};
 
   .tiptap {
     outline: none;
     line-height: 1.25rem;
     color: ${({ theme }) => theme.colors.neutral800};
     min-height: 80px;
-    padding: 1rem 0.5rem;
+    padding: 0 1.5rem 1.5rem 1.5rem;
 
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;

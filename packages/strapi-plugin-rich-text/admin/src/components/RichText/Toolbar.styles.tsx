@@ -6,6 +6,10 @@ export const StyledToolbar = styled("div")`
   border: 1px solid ${({ theme }) => theme.colors.neutral150};
   border-bottom: transparent;
 
+  .toolbar-controls {
+    padding: 1.5rem 1.5rem;
+  }
+
   .is-active {
     background: ${({ theme }) => theme.colors.primary200};
     color: ${({ theme }) => theme.colors.neutral0};

@@ -38,7 +38,7 @@ export default function Toolbar({ editor }: ToolbarProps) {
   return (
     <>
       <StyledToolbar>
-        <Box padding={2} className="toolbar-controls">
+        <Box className="toolbar-controls">
           <Flex justifyContent="space-between">
             <Flex style={{ flexWrap: "wrap", gap: "8px" }}>
               <Box>
