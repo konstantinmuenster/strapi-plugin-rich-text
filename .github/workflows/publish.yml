@@ -21,8 +21,7 @@ jobs:
           cache: "pnpm"
       - run: pnpm install
       - run: pnpm build --filter strapi-plugin-rich-text
-      - run: cd packages/strapi-plugin-rich-text
-      - run: npx semantic-release --branches main
+      - run: pnpm -r run release
         env:
           NPM_TOKEN: ${{secrets.NPM_TOKEN}}
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
