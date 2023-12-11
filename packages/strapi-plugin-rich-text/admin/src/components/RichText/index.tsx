@@ -5,7 +5,7 @@ import { Field, FieldLabel } from "@strapi/design-system/Field";
 import { Typography } from "@strapi/design-system/Typography";
 import { useIntl } from "react-intl";
 
-import Editor, { RichTextContent } from "./Editor";
+import Editor, { isRichText } from "./Editor";
 import { createHTMLFromMarkdown } from "../../lib/markdown";
 
 interface RichTextProps {
@@ -56,20 +56,20 @@ export default function RichText({
   const { formatMessage } = useIntl();
 
   const content = useMemo(() => {
-    try {
-      return (JSON.parse(value || "") as RichTextContent).json || "";
-    } catch {
-      return value ? createHTMLFromMarkdown(value) : "";
+    if (value) {
+      return isRichText(value) ? value : createHTMLFromMarkdown(value);
+    } else {
+      return "";
     }
   }, []);
 
   const handleChange = useCallback(
-    (value: RichTextContent) => {
+    (value: string) => {
       onChange({
         target: {
           name: name,
           type: attribute.type,
-          value: JSON.stringify(value),
+          value: value,
         },
       });
     },

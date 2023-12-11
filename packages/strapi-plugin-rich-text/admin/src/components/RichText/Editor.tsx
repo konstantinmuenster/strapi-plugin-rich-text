@@ -1,11 +1,4 @@
-import {
-  EditorContent,
-  Extension,
-  JSONContent,
-  Mark,
-  Node,
-  useEditor,
-} from "@tiptap/react";
+import { EditorContent, Extension, Mark, Node, useEditor } from "@tiptap/react";
 import { Blockquote } from "@tiptap/extension-blockquote";
 import { Bold } from "@tiptap/extension-bold";
 import { BulletList } from "@tiptap/extension-bullet-list";
@@ -59,15 +52,13 @@ const extensions: (Extension | Node | Mark)[] = [
   Youtube,
 ];
 
-export interface RichTextContent {
-  html?: string;
-  text?: string;
-  json?: JSONContent;
-}
+const OUTPUT_PREFIX = "<!--strapi-plugin-rich-text-output-->";
+const removeOutputPrefix = (value: string) => value.replace(OUTPUT_PREFIX, "");
+export const isRichText = (value: string) => value.startsWith(OUTPUT_PREFIX);
 
 interface EditorProps {
-  initialContent: RichTextContent | string;
-  onChange: (value: RichTextContent) => void;
+  initialContent: string;
+  onChange: (value: string) => void;
   placeholder: string | null;
   disabled: boolean;
 }
@@ -75,13 +66,9 @@ interface EditorProps {
 export default function Editor({ initialContent, onChange }: EditorProps) {
   const editor = useEditor({
     extensions,
-    content: initialContent,
+    content: removeOutputPrefix(initialContent),
     onUpdate: ({ editor }) => {
-      onChange({
-        html: editor.getHTML(),
-        text: editor.getText(),
-        json: editor.getJSON(),
-      });
+      onChange(OUTPUT_PREFIX + editor.getHTML());
     },
   });
 
