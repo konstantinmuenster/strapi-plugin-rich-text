@@ -218,6 +218,7 @@ type DialogProps = {
 function InsertLinkDialog({ editor, onExit }: DialogProps) {
   const [href, setHref] = useState<string>("");
   const [newTab, setNewTab] = useState<boolean>(false);
+  const [shouldRemove, setShouldRemove] = useState<boolean>(false);
 
   const onClose = useCallback(() => {
     setHref("");
@@ -226,7 +227,7 @@ function InsertLinkDialog({ editor, onExit }: DialogProps) {
   }, []);
 
   const onInsertLink = useCallback(() => {
-    if (href) {
+    if (!href || shouldRemove) {
       editor.chain().focus().extendMarkRange("link").unsetLink().run();
     } else {
       editor
@@ -238,7 +239,25 @@ function InsertLinkDialog({ editor, onExit }: DialogProps) {
     }
 
     onClose();
-  }, [editor]);
+  }, [editor, href]);
+
+  useEffect(() => {
+    if (editor.isActive("link")) {
+      const { href, target } = editor.getAttributes("link") as {
+        href: string;
+        target: string;
+      };
+      setHref(href);
+      setNewTab(target === "_blank");
+      setShouldRemove(true);
+    }
+
+    return () => {
+      setHref("");
+      setNewTab(false);
+      setShouldRemove(false);
+    };
+  }, []);
 
   return (
     <Dialog onClose={onClose} title="Insert link" isOpen={true}>
@@ -248,13 +267,20 @@ function InsertLinkDialog({ editor, onExit }: DialogProps) {
             label="Link URL"
             placeholder="Write or paste the url here"
             name="url"
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              setHref(e.target.value)
-            }
+            onChange={(e: ChangeEvent<HTMLInputElement>) => {
+              setHref(e.target.value);
+              setShouldRemove(false);
+            }}
             value={href}
             aria-label="URL"
           />
-          <Checkbox value={newTab} onValueChange={(v: boolean) => setNewTab(v)}>
+          <Checkbox
+            value={newTab}
+            onValueChange={(v: boolean) => {
+              setNewTab(v);
+              setShouldRemove(false);
+            }}
+          >
             Open in new tab
           </Checkbox>
         </Stack>
@@ -266,8 +292,11 @@ function InsertLinkDialog({ editor, onExit }: DialogProps) {
           </Button>
         }
         endAction={
-          <Button onClick={() => onInsertLink()} variant="success-light">
-            Insert link
+          <Button
+            onClick={() => onInsertLink()}
+            variant={shouldRemove ? "danger-light" : "success-light"}
+          >
+            {shouldRemove ? "Remove" : "Insert"} Link
           </Button>
         }
       />
