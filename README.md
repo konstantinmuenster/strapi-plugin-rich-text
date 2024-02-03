@@ -9,6 +9,8 @@ This Strapi plugin replaces the Markdown editor with a visual, easy-to-use text 
 - 🧱 Add rich content elements, such as embedded YouTube videos.
 - 📦 Have your existing Markdown content automatically migrated.
 
+The plugin stores the content in HTML format. When querying content on the frontend, you can simply render the received HTML string.
+
 ---
 
 <img alt="strapi-rich-text-plugin" style="border-radius:5px" src="./strapi-plugin-rich-text-cover.png" width="640">
@@ -27,6 +29,13 @@ npm run build
 ```
 
 After this, the `Rich Text` plugin should show up in your list of Plugins in the admin panel.
+
+
+#### Configuration
+
+| What | How |
+| --- | --- |
+| Allow YouTube Embeds | If you want to embed videos from YouTube, make sure you update your `strapi::security` middleware (see [here](https://github.com/konstantinmuenster/strapi-plugin-rich-text/blob/main/apps/strapi/config/middlewares.ts#L9)). |
 
 ---
 
