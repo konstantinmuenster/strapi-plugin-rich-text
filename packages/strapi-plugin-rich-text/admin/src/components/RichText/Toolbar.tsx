@@ -234,7 +234,7 @@ function InsertLinkDialog({ editor, onExit }: DialogProps) {
         .chain()
         .focus()
         .extendMarkRange("link")
-        .setLink({ href, target: newTab ? "_blank" : "_same" })
+        .setLink({ href, target: newTab ? "_blank" : "_self" })
         .run();
     }
 
