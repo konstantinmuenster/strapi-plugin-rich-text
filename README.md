@@ -22,19 +22,18 @@ The plugin stores the content in HTML format. When querying content on the front
 #### Install
 
 ```bash
-npm install strapi-plugin-rich-text
+pnpm install strapi-plugin-rich-text
 
 # Rebuild your Strapi admin panel
-npm run build
+pnpm run build
 ```
 
 After this, the `Rich Text` plugin should show up in your list of Plugins in the admin panel.
 
-
 #### Configuration
 
-| What | How |
-| --- | --- |
+| What                 | How                                                                                                                                                                                                                           |
+| -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Allow YouTube Embeds | If you want to embed videos from YouTube, make sure you update your `strapi::security` middleware (see [here](https://github.com/konstantinmuenster/strapi-plugin-rich-text/blob/main/apps/strapi/config/middlewares.ts#L9)). |
 
 ---
