@@ -38,6 +38,14 @@ After this, the `Rich Text` plugin should show up in your list of Plugins in the
 
 ---
 
+## Contributing
+
+This project uses Node.js 18 and pnpm. Make sure to meet these requirements before running
+
+`pnpm install`
+
+to install the dependencies.
+
 ## About
 
 <a href="https://www.buymeacoffee.com/kmuenster" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174"></a>
