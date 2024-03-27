@@ -46,6 +46,19 @@ This project uses Node.js 18 and pnpm. Make sure to meet these requirements befo
 
 to install the dependencies.
 
+This project includes an exemplary Strapi installation, which you can use to test the plugin while developing. If you clone the repository, you find a pre-populated SQLite database as well as the needed `.env` inside the project.
+
+You can start the development server via `pnpm dev` and access the Strapi admin with the following user credentials:
+
+```
+E-Mail Address: user@strapi.plugin.rich.text
+Password: dummyAdmin123
+```
+
+The Strapi admin already contains some playgrounds to test the editor.
+
+*Unfortunately, the Strapi installation doesn't support hot reloads yet. If you update the plugin code inside `packages/strapi-plugin-rich-text`, you need to rebuild the Strapi admin in order to see your changes. Feel free to add this!*
+
 ## About
 
 <a href="https://www.buymeacoffee.com/kmuenster" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174"></a>
