@@ -306,7 +306,8 @@ function InsertLinkDialog({ editor, onExit }: DialogProps) {
 
 function InsertYouTubeDialog({ editor, onExit }: DialogProps) {
   const [src, setSrc] = useState("");
-  const [height, setHeight] = useState<number | string>(360);
+  const [fixedDimensions, setFixedDimensions] = useState(false);
+  const [height, setHeight] = useState<number | string>(480);
   const [width, setWidth] = useState<number | string>(640);
 
   const onInsert = useCallback(
@@ -314,10 +315,12 @@ function InsertYouTubeDialog({ editor, onExit }: DialogProps) {
       src,
       height,
       width,
+      fixedDimensions,
     }: {
       src: string;
       height: number | string;
       width: number | string;
+      fixedDimensions: boolean;
     }) => {
       try {
         editor
@@ -325,8 +328,16 @@ function InsertYouTubeDialog({ editor, onExit }: DialogProps) {
           .focus()
           .setYoutubeVideo({
             src,
-            width: typeof width === "number" ? width : parseInt(width, 10),
-            height: typeof height === "number" ? height : parseInt(height, 10),
+            width: fixedDimensions
+              ? typeof width === "number"
+                ? width
+                : parseInt(width, 10)
+              : undefined,
+            height: fixedDimensions
+              ? typeof height === "number"
+                ? height
+                : parseInt(height, 10)
+              : undefined,
           })
           .run();
         onExit();
@@ -351,12 +362,33 @@ function InsertYouTubeDialog({ editor, onExit }: DialogProps) {
             }
             aria-label="YouTube URL"
           />
-
-          <Stack horizontal={true} spacing={2}>
+          <Box style={{ marginTop: "20px" }}>
+            <Checkbox
+              value={fixedDimensions}
+              onValueChange={(v: boolean) => {
+                setFixedDimensions(v);
+              }}
+            >
+              Set Fixed Dimensions
+            </Checkbox>
+          </Box>
+          <Stack
+            horizontal={true}
+            spacing={2}
+            style={
+              !fixedDimensions
+                ? {
+                    pointerEvents: "none",
+                    opacity: 0.5,
+                    filter: "grayscale(1)",
+                  }
+                : undefined
+            }
+          >
             <TextInput
-              label="YouTube Video Width"
+              label="Width"
               type="number"
-              placeholder="Add Video Height"
+              placeholder="Add Width"
               name="width"
               value={width}
               onChange={(e: ChangeEvent<HTMLInputElement>) =>
@@ -364,11 +396,10 @@ function InsertYouTubeDialog({ editor, onExit }: DialogProps) {
               }
               aria-label="YouTube Video Width"
             />
-
             <TextInput
-              label="YouTube Video Height"
+              label="Height"
               type="number"
-              placeholder="Add Video Height"
+              placeholder="Add Height"
               name="height"
               value={height}
               onChange={(e: ChangeEvent<HTMLInputElement>) =>
@@ -388,7 +419,7 @@ function InsertYouTubeDialog({ editor, onExit }: DialogProps) {
         endAction={
           <Button
             disabled={src.length === 0}
-            onClick={() => onInsert({ src, width, height })}
+            onClick={() => onInsert({ src, width, height, fixedDimensions })}
             variant="success-light"
           >
             Insert YouTube Embed

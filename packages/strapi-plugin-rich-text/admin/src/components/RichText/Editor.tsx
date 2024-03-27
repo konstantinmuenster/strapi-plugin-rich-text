@@ -49,7 +49,11 @@ const extensions: (Extension | Node | Mark)[] = [
   TextAlign,
   Text,
   Underline,
-  Youtube,
+  Youtube.configure({
+    modestBranding: true,
+    width: undefined,
+    height: undefined,
+  }),
 ];
 
 const OUTPUT_PREFIX = "<!--strapi-plugin-rich-text-output-->";
