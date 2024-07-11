@@ -61,7 +61,7 @@ export default function RichText({
     } else {
       return "";
     }
-  }, []);
+  }, [value]);
 
   const handleChange = useCallback(
     (value: string) => {
@@ -84,12 +84,14 @@ export default function RichText({
             {formatMessage(intlLabel)}
           </FieldLabel>
         </Box>
-        <Editor
-          initialContent={content}
-          onChange={handleChange}
-          placeholder={placeholder}
-          disabled={disabled}
-        />
+        {content && (
+          <Editor
+            initialContent={content}
+            onChange={handleChange}
+            placeholder={placeholder}
+            disabled={disabled}
+          />
+        )}
         {error && (
           <Typography variant="pi" textColor="danger600">
             {formatMessage({ id: error, defaultMessage: error })}
