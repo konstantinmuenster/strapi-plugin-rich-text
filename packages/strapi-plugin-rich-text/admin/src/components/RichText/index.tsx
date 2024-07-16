@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Stack } from "@strapi/design-system/Stack";
 import { Box } from "@strapi/design-system/Box";
 import { Field, FieldLabel } from "@strapi/design-system/Field";
@@ -54,6 +54,7 @@ export default function RichText({
   error,
 }: RichTextProps) {
   const { formatMessage } = useIntl();
+  const [shouldMountEditor, setShouldMountEditor] = useState(false);
 
   const content = useMemo(() => {
     if (value) {
@@ -76,6 +77,10 @@ export default function RichText({
     [onChange, name]
   );
 
+  useEffect(() => {
+    setShouldMountEditor(true);
+  }, []);
+
   return (
     <Field required={required}>
       <Stack spacing={1}>
@@ -84,7 +89,7 @@ export default function RichText({
             {formatMessage(intlLabel)}
           </FieldLabel>
         </Box>
-        {content && (
+        {shouldMountEditor && (
           <Editor
             initialContent={content}
             onChange={handleChange}
