@@ -24,13 +24,16 @@ import { Text } from "@tiptap/extension-text";
 import { Underline } from "@tiptap/extension-underline";
 import { Youtube } from "@tiptap/extension-youtube";
 
-import Toolbar from "./Toolbar";
-import { StyledEditor } from "./Editor.styles";
+import Abbr from "../../extensions/extension-abbr";
+
 import CountDisplay from "./CountDisplay";
+import { StyledEditor } from "./Editor.styles";
+import Toolbar from "./Toolbar";
 
 const limit = undefined;
 
 const extensions: (Extension | Node | Mark)[] = [
+  Abbr,
   Blockquote,
   Bold,
   BulletList,
