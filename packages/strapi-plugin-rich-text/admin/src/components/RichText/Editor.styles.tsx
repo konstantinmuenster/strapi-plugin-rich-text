@@ -6,9 +6,11 @@ export const StyledEditor = styled("div")`
 
   .tiptap {
     outline: none;
+    overflow-y: auto;
     line-height: 1.25rem;
     color: ${({ theme }) => theme.colors.neutral800};
     min-height: 80px;
+    max-height: 70vh;
     padding: 0 1.5rem 1.5rem 1.5rem;
 
     border-bottom-left-radius: 5px;
