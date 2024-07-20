@@ -1,3 +1,4 @@
+import { memo, useMemo } from "react";
 import { StyledCountDisplay } from "./CountDisplay.styles";
 
 interface CountDisplayProps {
@@ -6,12 +7,15 @@ interface CountDisplayProps {
   limit: number | undefined;
 }
 
-export default function CountDisplay({
+export default memo(function CountDisplay({
   characters,
   limit,
   words,
 }: CountDisplayProps) {
-  const percentage = limit ? Math.round((100 / limit) * characters) : 0;
+  const percentage = useMemo(
+    () => (limit ? Math.round((100 / limit) * characters) : 0),
+    [characters, limit]
+  );
 
   return (
     <StyledCountDisplay
@@ -39,4 +43,4 @@ export default function CountDisplay({
       {words} words
     </StyledCountDisplay>
   );
-}
+});
