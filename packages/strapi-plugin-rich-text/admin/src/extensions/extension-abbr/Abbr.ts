@@ -48,10 +48,6 @@ export const Abbr = Mark.create({
   },
 
   renderHTML({ HTMLAttributes }) {
-    console.log(
-      mergeAttributes(this.options.HTMLAttributes, { HTMLAttributes })
-    );
-
     return [
       "abbr",
       mergeAttributes(this.options.HTMLAttributes, HTMLAttributes),
