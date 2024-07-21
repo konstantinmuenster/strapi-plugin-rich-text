@@ -83,6 +83,9 @@ export default function Editor({ initialContent, onChange }: EditorProps) {
     content: removeOutputPrefix(initialContent),
     onUpdate: ({ editor }) => {
       onChange(OUTPUT_PREFIX + editor.getHTML());
+      const json = editor.getJSON();
+
+      console.log("JSON:\n", json);
     },
   });
 
