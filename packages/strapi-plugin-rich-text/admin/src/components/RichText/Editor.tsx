@@ -7,6 +7,7 @@ import { Code } from "@tiptap/extension-code";
 import { CodeBlock } from "@tiptap/extension-code-block";
 import { Document } from "@tiptap/extension-document";
 import { Dropcursor } from "@tiptap/extension-dropcursor";
+import { FloatingMenu } from "@tiptap/extension-floating-menu";
 import { Gapcursor } from "@tiptap/extension-gapcursor";
 import { HardBreak } from "@tiptap/extension-hard-break";
 import { Heading } from "@tiptap/extension-heading";
@@ -26,6 +27,7 @@ import { Youtube } from "@tiptap/extension-youtube";
 
 import Abbr from "../../extensions/extension-abbr";
 
+import AlertToolbar from "./Components/AlertToolbar";
 import CountDisplay from "./CountDisplay";
 import { StyledEditor } from "./Editor.styles";
 import Toolbar from "./Toolbar";
@@ -39,6 +41,7 @@ const extensions: (Extension | Node | Mark)[] = [
   Alert,
   Blockquote,
   Bold,
+  FloatingMenu,
   BulletList,
   CharacterCount.configure({
     limit,
@@ -96,6 +99,7 @@ export default function Editor({ initialContent, onChange }: EditorProps) {
   return (
     <StyledEditor data-plugin-rich-text-editor>
       <Toolbar editor={editor} />
+      {editor && <AlertToolbar editor={editor} />}
       <EditorContent editor={editor} />
       <CountDisplay
         characters={editor.storage.characterCount.characters()}
