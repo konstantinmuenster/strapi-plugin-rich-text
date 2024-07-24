@@ -30,10 +30,13 @@ import CountDisplay from "./CountDisplay";
 import { StyledEditor } from "./Editor.styles";
 import Toolbar from "./Toolbar";
 
+import Alert from "../../extensions/extension-alert/src";
+
 const limit = undefined;
 
 const extensions: (Extension | Node | Mark)[] = [
   Abbr,
+  Alert,
   Blockquote,
   Bold,
   BulletList,
