@@ -34,5 +34,7 @@
   "editor.dialog.placeholder.height": "Add Height",
   "editor.dialog.placeholder.link-url": "Write or paste the url here",
   "editor.dialog.placeholder.youtube-url": "Add YouTube URL",
-  "editor.dialog.placeholder.width": "Add Width"
+  "editor.dialog.placeholder.width": "Add Width",
+  "editor.dialog.title.insert-link": "Insert Link",
+  "editor.dialog.title.insert-youtube-embed": "Insert YouTube embed"
 }
