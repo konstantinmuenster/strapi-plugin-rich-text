@@ -1,4 +1,6 @@
 {
+  "editor.counter.characters": "{count} caracteres",
+  "editor.counter.words": "{count} palabras",
   "editor.toolbar.button.bold": "Negrita",
   "editor.toolbar.button.italic": "Cursiva",
   "editor.toolbar.button.underline": "Subrayado",

@@ -1,4 +1,6 @@
 {
+  "editor.counter.characters": "{count} characters",
+  "editor.counter.words": "{count} words",
   "editor.toolbar.button.bold": "Bold",
   "editor.toolbar.button.italic": "Italic",
   "editor.toolbar.button.underline": "Underline",

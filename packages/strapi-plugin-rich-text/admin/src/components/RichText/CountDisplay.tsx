@@ -1,4 +1,6 @@
 import { memo, useMemo } from "react";
+import { useIntl } from "react-intl";
+
 import { StyledCountDisplay } from "./CountDisplay.styles";
 
 interface CountDisplayProps {
@@ -12,6 +14,8 @@ export default memo(function CountDisplay({
   limit,
   words,
 }: CountDisplayProps) {
+  const { formatMessage } = useIntl();
+
   const percentage = useMemo(
     () => (limit ? Math.round((100 / limit) * characters) : 0),
     [characters, limit]
@@ -37,10 +41,23 @@ export default memo(function CountDisplay({
           <circle r="6" cx="10" cy="10" fill="white" />
         </svg>
       )}
-      {characters}
-      {limit && ` / ${limit}`} characters
+      {formatMessage(
+        {
+          id: "editor.counter.characters",
+          defaultMessage: "{count} characters",
+        },
+        {
+          count: `${characters}${limit ? ` / ${limit}` : ""}`,
+        }
+      )}
       <br />
-      {words} words
+      {formatMessage(
+        {
+          id: "editor.counter.words",
+          defaultMessage: "{count} words",
+        },
+        { count: words }
+      )}
     </StyledCountDisplay>
   );
 });

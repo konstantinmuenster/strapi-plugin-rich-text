@@ -1,4 +1,6 @@
 {
+  "editor.counter.characters": "{count} harf",
+  "editor.counter.words": "{count} kelime",
   "editor.toolbar.button.bold": "Kalın",
   "editor.toolbar.button.italic": "İtalik",
   "editor.toolbar.button.underline": "Altı çizili",
