@@ -35,5 +35,7 @@
   "editor.dialog.placeholder.height": "Agregar Altura",
   "editor.dialog.placeholder.link-url": "Escribe o pega la URL aquí",
   "editor.dialog.placeholder.youtube-url": "Agregar URL de YouTube",
-  "editor.dialog.placeholder.width": "Agregar Anchura"
+  "editor.dialog.placeholder.width": "Agregar Anchura",
+  "editor.dialog.title.insert-link": "Insertar Enlace",
+  "editor.dialog.title.insert-youtube-embed": "Insertar incrustación de YouTube"
 }
