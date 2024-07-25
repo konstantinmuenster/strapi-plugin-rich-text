@@ -1,9 +1,12 @@
 import { Select, Option } from "@strapi/design-system/Select";
 import { Editor } from "@tiptap/core";
 import { useState, useCallback, useEffect } from "react";
+import { useIntl } from "react-intl";
 
 export default function BlockTypeSelect({ editor }: { editor: Editor }) {
   const [selectedType, setSelectedType] = useState<string>("paragraph");
+
+  const { formatMessage } = useIntl();
 
   const onSelect = useCallback((type: string) => {
     switch (type) {
@@ -68,18 +71,61 @@ export default function BlockTypeSelect({ editor }: { editor: Editor }) {
     <Select
       required
       size="S"
-      placeholder="Text Style"
+      placeholder={formatMessage({
+        id: "rich-text.editor.toolbar.placeholder.text-style",
+        defaultMessage: "Text Style",
+      })}
       onChange={onSelect}
       value={selectedType}
     >
-      <Option value={"paragraph"}>Paragraph</Option>
-      <Option value={"h1"}>Heading 1</Option>
-      <Option value={"h2"}>Heading 2</Option>
-      <Option value={"h3"}>Heading 3</Option>
-      <Option value={"h4"}>Heading 4</Option>
-      <Option value={"blockquote"}>Quote</Option>
-      <Option value={"orderedList"}>Ordered list</Option>
-      <Option value={"bulletList"}>Bullet list</Option>
+      <Option value={"paragraph"}>
+        {formatMessage({
+          id: "rich-text.editor.toolbar.select.paragraph",
+          defaultMessage: "Paragraph",
+        })}
+      </Option>
+      <Option value={"h1"}>
+        {formatMessage({
+          id: "rich-text.editor.toolbar.select.heading-1",
+          defaultMessage: "Heading 1",
+        })}
+      </Option>
+      <Option value={"h2"}>
+        {formatMessage({
+          id: "rich-text.editor.toolbar.select.heading-2",
+          defaultMessage: "Heading 2",
+        })}
+      </Option>
+      <Option value={"h3"}>
+        {formatMessage({
+          id: "rich-text.editor.toolbar.select.heading-3",
+          defaultMessage: "Heading 3",
+        })}
+      </Option>
+      <Option value={"h4"}>
+        {formatMessage({
+          id: "rich-text.editor.toolbar.select.heading-4",
+          defaultMessage: "Heading 4",
+        })}
+      </Option>
+      <Option value={"blockquote"}>
+        {formatMessage({
+          id: "rich-text.editor.toolbar.select.quote",
+          defaultMessage: "Quote",
+        })}
+      </Option>
+      <Option value={"orderedList"}>
+        {formatMessage({
+          id: "rich-text.editor.toolbar.select.ordered-list",
+          defaultMessage: "Ordered list",
+        })}
+      </Option>
+      <Option value={"bulletList"}>
+        {formatMessage({
+          id: "rich-text.editor.toolbar.select.bullet-list",
+          defaultMessage: "Bullet list",
+        })}
+      </Option>
     </Select>
   );
 }
