@@ -19,6 +19,7 @@ import { Button } from "@strapi/design-system/Button";
 import { TextInput } from "@strapi/design-system/TextInput";
 import { Select, Option } from "@strapi/design-system/Select";
 import { Checkbox } from "@strapi/design-system/Checkbox";
+import { useIntl } from "react-intl";
 
 import { StyledToolbar } from "./Toolbar.styles";
 
@@ -30,6 +31,8 @@ export default function Toolbar({ editor }: ToolbarProps) {
   const [openDialog, setOpenDialog] = useState<
     "insertLink" | "insertYouTube" | false
   >(false);
+
+  const { formatMessage } = useIntl();
 
   if (!editor) {
     return null;
@@ -47,34 +50,49 @@ export default function Toolbar({ editor }: ToolbarProps) {
               <IconButtonGroup>
                 <IconButton
                   icon={<Bold />}
-                  label="Bold"
+                  label={formatMessage({
+                    id: "rich-text.editor.toolbar.button.bold",
+                    defaultMessage: "Bold",
+                  })}
                   onClick={() => editor.chain().focus().toggleBold().run()}
                   disabled={!editor.can().chain().focus().toggleBold().run()}
                   className={editor.isActive("bold") ? "is-active" : ""}
                 />
                 <IconButton
                   icon={<Italic />}
-                  label="Italic"
+                  label={formatMessage({
+                    id: "rich-text.editor.toolbar.button.italic",
+                    defaultMessage: "Italic",
+                  })}
                   onClick={() => editor.chain().focus().toggleItalic().run()}
                   disabled={!editor.can().chain().focus().toggleItalic().run()}
                   className={editor.isActive("italic") ? "is-active" : ""}
                 />
                 <IconButton
                   icon={<Underline />}
-                  label="Underline"
+                  label={formatMessage({
+                    id: "rich-text.editor.toolbar.button.underline",
+                    defaultMessage: "Underline",
+                  })}
                   className={editor.isActive("underline") ? "is-active" : ""}
                   onClick={() => editor.chain().focus().toggleUnderline().run()}
                 />
                 <IconButton
                   icon={<StrikeThrough />}
-                  label="Strike"
+                  label={formatMessage({
+                    id: "rich-text.editor.toolbar.button.strike",
+                    defaultMessage: "Strike",
+                  })}
                   onClick={() => editor.chain().focus().toggleStrike().run()}
                   disabled={!editor.can().chain().focus().toggleStrike().run()}
                   className={editor.isActive("strike") ? "is-active" : ""}
                 />
                 <IconButton
                   icon={<Link />}
-                  label="Link"
+                  label={formatMessage({
+                    id: "rich-text.editor.toolbar.button.link",
+                    defaultMessage: "Link",
+                  })}
                   className={editor.isActive("link") ? "is-active" : ""}
                   onClick={() => setOpenDialog("insertLink")}
                 />
@@ -82,14 +100,20 @@ export default function Toolbar({ editor }: ToolbarProps) {
               <IconButtonGroup>
                 <IconButton
                   icon={<Minus />}
-                  label="Horizontal line"
+                  label={formatMessage({
+                    id: "rich-text.editor.toolbar.button.horizontal-line",
+                    defaultMessage: "Horizontal line",
+                  })}
                   onClick={() =>
                     editor.chain().focus().setHorizontalRule().run()
                   }
                 />
                 <IconButton
                   icon={ExtraIcons.YouTube}
-                  label="YouTube"
+                  label={formatMessage({
+                    id: "rich-text.editor.toolbar.button.youtube",
+                    defaultMessage: "YouTube",
+                  })}
                   className={[
                     "large-icon",
                     editor.isActive("youtube") ? "is-active" : "",
@@ -100,13 +124,19 @@ export default function Toolbar({ editor }: ToolbarProps) {
               <IconButtonGroup>
                 <IconButton
                   icon={<ArrowLeft style={{ width: "0.7rem" }} />}
-                  label="Undo"
+                  label={formatMessage({
+                    id: "rich-text.editor.toolbar.button.undo",
+                    defaultMessage: "Undo",
+                  })}
                   onClick={() => editor.chain().focus().undo().run()}
                   disabled={!editor.can().chain().focus().undo().run()}
                 />
                 <IconButton
                   icon={<ArrowRight style={{ width: "0.7rem" }} />}
-                  label="Redo"
+                  label={formatMessage({
+                    id: "rich-text.editor.toolbar.button.redo",
+                    defaultMessage: "Redo",
+                  })}
                   onClick={() => editor.chain().focus().redo().run()}
                   disabled={!editor.can().chain().focus().redo().run()}
                 />
@@ -130,6 +160,8 @@ export default function Toolbar({ editor }: ToolbarProps) {
 
 function BlockTypeSelect({ editor }: { editor: Editor }) {
   const [selectedType, setSelectedType] = useState<string>("paragraph");
+
+  const { formatMessage } = useIntl();
 
   const onSelect = useCallback((type: string) => {
     switch (type) {
@@ -194,18 +226,61 @@ function BlockTypeSelect({ editor }: { editor: Editor }) {
     <Select
       required
       size="S"
-      placeholder="Text Style"
+      placeholder={formatMessage({
+        id: "rich-text.editor.toolbar.placeholder.text-style",
+        defaultMessage: "Text Style",
+      })}
       onChange={onSelect}
       value={selectedType}
     >
-      <Option value={"paragraph"}>Paragraph</Option>
-      <Option value={"h1"}>Heading 1</Option>
-      <Option value={"h2"}>Heading 2</Option>
-      <Option value={"h3"}>Heading 3</Option>
-      <Option value={"h4"}>Heading 4</Option>
-      <Option value={"blockquote"}>Quote</Option>
-      <Option value={"orderedList"}>Ordered list</Option>
-      <Option value={"bulletList"}>Bullet list</Option>
+      <Option value={"paragraph"}>
+        {formatMessage({
+          id: "rich-text.editor.toolbar.select.paragraph",
+          defaultMessage: "Paragraph",
+        })}
+      </Option>
+      <Option value={"h1"}>
+        {formatMessage({
+          id: "rich-text.editor.toolbar.select.heading-1",
+          defaultMessage: "Heading 1",
+        })}
+      </Option>
+      <Option value={"h2"}>
+        {formatMessage({
+          id: "rich-text.editor.toolbar.select.heading-2",
+          defaultMessage: "Heading 2",
+        })}
+      </Option>
+      <Option value={"h3"}>
+        {formatMessage({
+          id: "rich-text.editor.toolbar.select.heading-3",
+          defaultMessage: "Heading 3",
+        })}
+      </Option>
+      <Option value={"h4"}>
+        {formatMessage({
+          id: "rich-text.editor.toolbar.select.heading-4",
+          defaultMessage: "Heading 4",
+        })}
+      </Option>
+      <Option value={"blockquote"}>
+        {formatMessage({
+          id: "rich-text.editor.toolbar.select.quote",
+          defaultMessage: "Quote",
+        })}
+      </Option>
+      <Option value={"orderedList"}>
+        {formatMessage({
+          id: "rich-text.editor.toolbar.select.ordered-list",
+          defaultMessage: "Ordered list",
+        })}
+      </Option>
+      <Option value={"bulletList"}>
+        {formatMessage({
+          id: "rich-text.editor.toolbar.select.bullet-list",
+          defaultMessage: "Bullet list",
+        })}
+      </Option>
     </Select>
   );
 }
@@ -219,6 +294,8 @@ function InsertLinkDialog({ editor, onExit }: DialogProps) {
   const [href, setHref] = useState<string>("");
   const [newTab, setNewTab] = useState<boolean>(false);
   const [shouldRemove, setShouldRemove] = useState<boolean>(false);
+
+  const { formatMessage } = useIntl();
 
   const onClose = useCallback(() => {
     setHref("");
@@ -260,19 +337,35 @@ function InsertLinkDialog({ editor, onExit }: DialogProps) {
   }, []);
 
   return (
-    <Dialog onClose={onClose} title="Insert link" isOpen={true}>
+    <Dialog
+      onClose={onClose}
+      title={formatMessage({
+        id: "editor.dialog.title.insert-link",
+        defaultMessage: "Insert link",
+      })}
+      isOpen={true}
+    >
       <DialogBody>
         <Stack spacing={2}>
           <TextInput
-            label="Link URL"
-            placeholder="Write or paste the url here"
+            label={formatMessage({
+              id: "rich-text.editor.dialog.label.link-url",
+              defaultMessage: "Link URL",
+            })}
+            placeholder={formatMessage({
+              id: "rich-text.editor.dialog.placeholder.link-url",
+              defaultMessage: "Write or paste the url here",
+            })}
             name="url"
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
               setHref(e.target.value);
               setShouldRemove(false);
             }}
             value={href}
-            aria-label="URL"
+            aria-label={formatMessage({
+              id: "rich-text.editor.dialog.label.url",
+              defaultMessage: "URL",
+            })}
           />
           <Checkbox
             value={newTab}
@@ -281,14 +374,20 @@ function InsertLinkDialog({ editor, onExit }: DialogProps) {
               setShouldRemove(false);
             }}
           >
-            Open in new tab
+            {formatMessage({
+              id: "rich-text.editor.dialog.checkbox.open-in-new-tab",
+              defaultMessage: "Open in new tab",
+            })}
           </Checkbox>
         </Stack>
       </DialogBody>
       <DialogFooter
         startAction={
           <Button onClick={onClose} variant="tertiary">
-            Cancel
+            {formatMessage({
+              id: "rich-text.editor.dialog.button.cancel",
+              defaultMessage: "Cancel",
+            })}
           </Button>
         }
         endAction={
@@ -296,7 +395,15 @@ function InsertLinkDialog({ editor, onExit }: DialogProps) {
             onClick={() => onInsertLink()}
             variant={shouldRemove ? "danger-light" : "success-light"}
           >
-            {shouldRemove ? "Remove" : "Insert"} Link
+            {formatMessage(
+              {
+                id: "editor.dialog.button.link-confirm",
+                defaultMessage: "{action} Link",
+              },
+              {
+                action: shouldRemove ? "Remove" : "Insert",
+              }
+            )}
           </Button>
         }
       />
@@ -309,6 +416,8 @@ function InsertYouTubeDialog({ editor, onExit }: DialogProps) {
   const [fixedDimensions, setFixedDimensions] = useState(false);
   const [height, setHeight] = useState<number | string>(480);
   const [width, setWidth] = useState<number | string>(640);
+
+  const { formatMessage } = useIntl();
 
   const onInsert = useCallback(
     ({
@@ -349,18 +458,34 @@ function InsertYouTubeDialog({ editor, onExit }: DialogProps) {
   );
 
   return (
-    <Dialog onClose={onExit} title="Insert YouTube embed" isOpen={true}>
+    <Dialog
+      onClose={onExit}
+      title={formatMessage({
+        id: "editor.dialog.title.insert-youtube-embed",
+        defaultMessage: "Insert YouTube embed",
+      })}
+      isOpen={true}
+    >
       <DialogBody>
         <Stack spacing={2}>
           <TextInput
-            label="YouTube URL"
-            placeholder="Add YouTube URL"
+            label={formatMessage({
+              id: "rich-text.editor.dialog.label.youtube-url",
+              defaultMessage: "YouTube URL",
+            })}
+            placeholder={formatMessage({
+              id: "rich-text.editor.dialog.placeholder.youtube-url",
+              defaultMessage: "Add YouTube URL",
+            })}
             name="url"
             value={src}
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
               setSrc(e.target.value)
             }
-            aria-label="YouTube URL"
+            aria-label={formatMessage({
+              id: "rich-text.editor.dialog.label.youtube-url",
+              defaultMessage: "YouTube URL",
+            })}
           />
           <Box style={{ marginTop: "20px" }}>
             <Checkbox
@@ -369,7 +494,10 @@ function InsertYouTubeDialog({ editor, onExit }: DialogProps) {
                 setFixedDimensions(v);
               }}
             >
-              Set Fixed Dimensions
+              {formatMessage({
+                id: "rich-text.editor.dialog.checkbox.set-fixed-dimensions",
+                defaultMessage: "Set Fixed Dimensions",
+              })}
             </Checkbox>
           </Box>
           <Stack
@@ -386,26 +514,44 @@ function InsertYouTubeDialog({ editor, onExit }: DialogProps) {
             }
           >
             <TextInput
-              label="Width"
+              label={formatMessage({
+                id: "rich-text.editor.dialog.label.width",
+                defaultMessage: "Width",
+              })}
               type="number"
-              placeholder="Add Width"
+              placeholder={formatMessage({
+                id: "rich-text.editor.dialog.placeholder.width",
+                defaultMessage: "Add Width",
+              })}
               name="width"
               value={width}
               onChange={(e: ChangeEvent<HTMLInputElement>) =>
                 setWidth(e.target.value)
               }
-              aria-label="YouTube Video Width"
+              aria-label={formatMessage({
+                id: "rich-text.editor.dialog.label.youtube-video-width",
+                defaultMessage: "YouTube Video Width",
+              })}
             />
             <TextInput
-              label="Height"
+              label={formatMessage({
+                id: "rich-text.editor.dialog.placeholder.height",
+                defaultMessage: "Height",
+              })}
               type="number"
-              placeholder="Add Height"
+              placeholder={formatMessage({
+                id: "rich-text.editor.dialog.placeholder.height",
+                defaultMessage: "Add Height",
+              })}
               name="height"
               value={height}
               onChange={(e: ChangeEvent<HTMLInputElement>) =>
                 setHeight(e.target.value)
               }
-              aria-label="YouTube Video Height"
+              aria-label={formatMessage({
+                id: "rich-text.editor.dialog.label.youtube-video-height",
+                defaultMessage: "YouTube Video Height",
+              })}
             />
           </Stack>
         </Stack>
@@ -413,7 +559,10 @@ function InsertYouTubeDialog({ editor, onExit }: DialogProps) {
       <DialogFooter
         startAction={
           <Button onClick={onExit} variant="tertiary">
-            Cancel
+            {formatMessage({
+              id: "rich-text.editor.dialog.button.cancel",
+              defaultMessage: "Cancel",
+            })}
           </Button>
         }
         endAction={
@@ -422,7 +571,10 @@ function InsertYouTubeDialog({ editor, onExit }: DialogProps) {
             onClick={() => onInsert({ src, width, height, fixedDimensions })}
             variant="success-light"
           >
-            Insert YouTube Embed
+            {formatMessage({
+              id: "rich-text.editor.dialog.button.insert-youtube-embed",
+              defaultMessage: "Insert YouTube Embed",
+            })}
           </Button>
         }
       />

@@ -2,6 +2,7 @@ import { EditorContent, Extension, Mark, Node, useEditor } from "@tiptap/react";
 import { Blockquote } from "@tiptap/extension-blockquote";
 import { Bold } from "@tiptap/extension-bold";
 import { BulletList } from "@tiptap/extension-bullet-list";
+import { CharacterCount } from "@tiptap/extension-character-count";
 import { Code } from "@tiptap/extension-code";
 import { CodeBlock } from "@tiptap/extension-code-block";
 import { Document } from "@tiptap/extension-document";
@@ -25,11 +26,17 @@ import { Youtube } from "@tiptap/extension-youtube";
 
 import Toolbar from "./Toolbar";
 import { StyledEditor } from "./Editor.styles";
+import CountDisplay from "./CountDisplay";
+
+const limit = undefined;
 
 const extensions: (Extension | Node | Mark)[] = [
   Blockquote,
   Bold,
   BulletList,
+  CharacterCount.configure({
+    limit,
+  }),
   Code,
   CodeBlock,
   Document,
@@ -76,10 +83,19 @@ export default function Editor({ initialContent, onChange }: EditorProps) {
     },
   });
 
+  if (!editor) {
+    return null;
+  }
+
   return (
     <StyledEditor data-plugin-rich-text-editor>
       <Toolbar editor={editor} />
       <EditorContent editor={editor} />
+      <CountDisplay
+        characters={editor.storage.characterCount.characters()}
+        words={editor.storage.characterCount.words()}
+        limit={limit}
+      />
     </StyledEditor>
   );
 }
