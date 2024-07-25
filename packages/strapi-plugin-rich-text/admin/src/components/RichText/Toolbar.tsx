@@ -337,7 +337,14 @@ function InsertLinkDialog({ editor, onExit }: DialogProps) {
   }, []);
 
   return (
-    <Dialog onClose={onClose} title="Insert link" isOpen={true}>
+    <Dialog
+      onClose={onClose}
+      title={formatMessage({
+        id: "editor.dialog.title.insert-link",
+        defaultMessage: "Insert link",
+      })}
+      isOpen={true}
+    >
       <DialogBody>
         <Stack spacing={2}>
           <TextInput
@@ -451,7 +458,14 @@ function InsertYouTubeDialog({ editor, onExit }: DialogProps) {
   );
 
   return (
-    <Dialog onClose={onExit} title="Insert YouTube embed" isOpen={true}>
+    <Dialog
+      onClose={onExit}
+      title={formatMessage({
+        id: "editor.dialog.title.insert-youtube-embed",
+        defaultMessage: "Insert YouTube embed",
+      })}
+      isOpen={true}
+    >
       <DialogBody>
         <Stack spacing={2}>
           <TextInput

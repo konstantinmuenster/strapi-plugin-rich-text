@@ -34,5 +34,7 @@
   "editor.dialog.placeholder.height": "Yükseklik Ekle",
   "editor.dialog.placeholder.link-url": "URL'yi buraya yazın veya yapıştırın",
   "editor.dialog.placeholder.youtube-url": "YouTube URL Ekle",
-  "editor.dialog.placeholder.width": "Genişlik Ekle"
+  "editor.dialog.placeholder.width": "Genişlik Ekle",
+  "editor.dialog.title.insert-link": "Bağlantı Ekle",
+  "editor.dialog.title.insert-youtube-embed": "YouTube Gömülüsü Ekle"
 }
