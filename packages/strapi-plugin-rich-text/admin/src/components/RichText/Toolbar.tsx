@@ -100,7 +100,10 @@ export default function Toolbar({ editor }: ToolbarProps) {
               </IconButtonGroup>
               <IconButtonGroup>
                 <IconButton
-                  label="Abbreviation"
+                  label={formatMessage({
+                    id: "editor.toolbar.button.abbreviation",
+                    defaultMessage: "Abbreviation",
+                  })}
                   onClick={() => setOpenDialog("abbr")}
                   disabled={!editor.can().chain().focus().toggleAbbr("").run()}
                   className={editor.isActive("abbr") ? "is-active" : ""}

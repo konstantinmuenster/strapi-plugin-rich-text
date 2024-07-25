@@ -1,4 +1,5 @@
 {
+  "editor.toolbar.button.abbreviation": "Abbreviation",
   "editor.toolbar.button.bold": "Bold",
   "editor.toolbar.button.italic": "Italic",
   "editor.toolbar.button.underline": "Underline",
@@ -19,6 +20,7 @@
   "editor.toolbar.select.quote": "Quote",
   "editor.toolbar.select.ordered-list": "Ordered List",
   "editor.toolbar.select.bullet-list": "Bullet List",
+  "editor.dialog.button.abbreviation-confirm": "{action, select, Remove {Remove Abbreviation} Insert {Insert Abbreviation}}",
   "editor.dialog.button.cancel": "Cancel",
   "editor.dialog.button.insert-youtube-embed": "Insert YouTube Embed",
   "editor.dialog.button.link-confirm": "{action, select, Remove {Remove Link} Insert {Insert Link}}",
@@ -26,15 +28,18 @@
   "editor.dialog.checkbox.set-fixed-dimensions": "Set Fixed Dimensions",
   "editor.dialog.label.height": "Height",
   "editor.dialog.label.link-url": "Link URL",
+  "editor.dialog.label.title": "Title",
   "editor.dialog.label.url": "URL",
   "editor.dialog.label.width": "Width",
   "editor.dialog.label.youtube-video-height": "YouTube Video Height",
   "editor.dialog.label.youtube-url": "YouTube URL",
   "editor.dialog.label.youtube-video-width": "YouTube Video Width",
   "editor.dialog.placeholder.height": "Add Height",
+  "editor.dialog.placeholder.abbreviation-title": "Abbreviation's title",
   "editor.dialog.placeholder.link-url": "Write or paste the url here",
   "editor.dialog.placeholder.youtube-url": "Add YouTube URL",
   "editor.dialog.placeholder.width": "Add Width",
+  "editor.dialog.title.insert-abbreviation": "Insert Abbreviation",
   "editor.dialog.title.insert-link": "Insert Link",
   "editor.dialog.title.insert-youtube-embed": "Insert YouTube embed"
 }
