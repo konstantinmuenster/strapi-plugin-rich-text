@@ -4,6 +4,7 @@ import { Dialog, DialogBody, DialogFooter } from "@strapi/design-system/Dialog";
 import { TextInput } from "@strapi/design-system/TextInput";
 import { Stack } from "@strapi/design-system/Stack";
 import { useState, useCallback, useEffect, ChangeEvent } from "react";
+import { useIntl } from "react-intl";
 
 import { DialogProps } from "./types";
 
@@ -11,6 +12,8 @@ export default function InsertLinkDialog({ editor, onExit }: DialogProps) {
   const [href, setHref] = useState<string>("");
   const [newTab, setNewTab] = useState<boolean>(false);
   const [shouldRemove, setShouldRemove] = useState<boolean>(false);
+
+  const { formatMessage } = useIntl();
 
   const onClose = useCallback(() => {
     setHref("");
@@ -52,19 +55,35 @@ export default function InsertLinkDialog({ editor, onExit }: DialogProps) {
   }, []);
 
   return (
-    <Dialog onClose={onClose} title="Insert link" isOpen={true}>
+    <Dialog
+      onClose={onClose}
+      title={formatMessage({
+        id: "editor.dialog.title.insert-link",
+        defaultMessage: "Insert link",
+      })}
+      isOpen={true}
+    >
       <DialogBody>
         <Stack spacing={2}>
           <TextInput
-            label="Link URL"
-            placeholder="Write or paste the url here"
+            label={formatMessage({
+              id: "rich-text.editor.dialog.label.link-url",
+              defaultMessage: "Link URL",
+            })}
+            placeholder={formatMessage({
+              id: "rich-text.editor.dialog.placeholder.link-url",
+              defaultMessage: "Write or paste the url here",
+            })}
             name="url"
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
               setHref(e.target.value);
               setShouldRemove(false);
             }}
             value={href}
-            aria-label="URL"
+            aria-label={formatMessage({
+              id: "rich-text.editor.dialog.label.url",
+              defaultMessage: "URL",
+            })}
           />
           <Checkbox
             value={newTab}
@@ -73,14 +92,20 @@ export default function InsertLinkDialog({ editor, onExit }: DialogProps) {
               setShouldRemove(false);
             }}
           >
-            Open in new tab
+            {formatMessage({
+              id: "rich-text.editor.dialog.checkbox.open-in-new-tab",
+              defaultMessage: "Open in new tab",
+            })}
           </Checkbox>
         </Stack>
       </DialogBody>
       <DialogFooter
         startAction={
           <Button onClick={onClose} variant="tertiary">
-            Cancel
+            {formatMessage({
+              id: "rich-text.editor.dialog.button.cancel",
+              defaultMessage: "Cancel",
+            })}
           </Button>
         }
         endAction={
@@ -88,7 +113,15 @@ export default function InsertLinkDialog({ editor, onExit }: DialogProps) {
             onClick={() => onInsertLink()}
             variant={shouldRemove ? "danger-light" : "success-light"}
           >
-            {shouldRemove ? "Remove" : "Insert"} Link
+            {formatMessage(
+              {
+                id: "editor.dialog.button.link-confirm",
+                defaultMessage: "{action} Link",
+              },
+              {
+                action: shouldRemove ? "Remove" : "Insert",
+              }
+            )}
           </Button>
         }
       />

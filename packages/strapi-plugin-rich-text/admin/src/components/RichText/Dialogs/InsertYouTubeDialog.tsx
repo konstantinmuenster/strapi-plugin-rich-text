@@ -4,7 +4,8 @@ import { Checkbox } from "@strapi/design-system/Checkbox";
 import { Dialog, DialogBody, DialogFooter } from "@strapi/design-system/Dialog";
 import { TextInput } from "@strapi/design-system/TextInput";
 import { Stack } from "@strapi/design-system/Stack";
-import { useState, useCallback, useEffect, ChangeEvent } from "react";
+import { useState, useCallback, ChangeEvent } from "react";
+import { useIntl } from "react-intl";
 
 import { DialogProps } from "./types";
 
@@ -13,6 +14,8 @@ export default function InsertYouTubeDialog({ editor, onExit }: DialogProps) {
   const [fixedDimensions, setFixedDimensions] = useState(false);
   const [height, setHeight] = useState<number | string>(480);
   const [width, setWidth] = useState<number | string>(640);
+
+  const { formatMessage } = useIntl();
 
   const onInsert = useCallback(
     ({
@@ -53,18 +56,34 @@ export default function InsertYouTubeDialog({ editor, onExit }: DialogProps) {
   );
 
   return (
-    <Dialog onClose={onExit} title="Insert YouTube embed" isOpen={true}>
+    <Dialog
+      onClose={onExit}
+      title={formatMessage({
+        id: "editor.dialog.title.insert-youtube-embed",
+        defaultMessage: "Insert YouTube embed",
+      })}
+      isOpen={true}
+    >
       <DialogBody>
         <Stack spacing={2}>
           <TextInput
-            label="YouTube URL"
-            placeholder="Add YouTube URL"
+            label={formatMessage({
+              id: "rich-text.editor.dialog.label.youtube-url",
+              defaultMessage: "YouTube URL",
+            })}
+            placeholder={formatMessage({
+              id: "rich-text.editor.dialog.placeholder.youtube-url",
+              defaultMessage: "Add YouTube URL",
+            })}
             name="url"
             value={src}
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
               setSrc(e.target.value)
             }
-            aria-label="YouTube URL"
+            aria-label={formatMessage({
+              id: "rich-text.editor.dialog.label.youtube-url",
+              defaultMessage: "YouTube URL",
+            })}
           />
           <Box style={{ marginTop: "20px" }}>
             <Checkbox
@@ -73,7 +92,10 @@ export default function InsertYouTubeDialog({ editor, onExit }: DialogProps) {
                 setFixedDimensions(v);
               }}
             >
-              Set Fixed Dimensions
+              {formatMessage({
+                id: "rich-text.editor.dialog.checkbox.set-fixed-dimensions",
+                defaultMessage: "Set Fixed Dimensions",
+              })}
             </Checkbox>
           </Box>
           <Stack
@@ -90,26 +112,44 @@ export default function InsertYouTubeDialog({ editor, onExit }: DialogProps) {
             }
           >
             <TextInput
-              label="Width"
+              label={formatMessage({
+                id: "rich-text.editor.dialog.label.width",
+                defaultMessage: "Width",
+              })}
               type="number"
-              placeholder="Add Width"
+              placeholder={formatMessage({
+                id: "rich-text.editor.dialog.placeholder.width",
+                defaultMessage: "Add Width",
+              })}
               name="width"
               value={width}
               onChange={(e: ChangeEvent<HTMLInputElement>) =>
                 setWidth(e.target.value)
               }
-              aria-label="YouTube Video Width"
+              aria-label={formatMessage({
+                id: "rich-text.editor.dialog.label.youtube-video-width",
+                defaultMessage: "YouTube Video Width",
+              })}
             />
             <TextInput
-              label="Height"
+              label={formatMessage({
+                id: "rich-text.editor.dialog.placeholder.height",
+                defaultMessage: "Height",
+              })}
               type="number"
-              placeholder="Add Height"
+              placeholder={formatMessage({
+                id: "rich-text.editor.dialog.placeholder.height",
+                defaultMessage: "Add Height",
+              })}
               name="height"
               value={height}
               onChange={(e: ChangeEvent<HTMLInputElement>) =>
                 setHeight(e.target.value)
               }
-              aria-label="YouTube Video Height"
+              aria-label={formatMessage({
+                id: "rich-text.editor.dialog.label.youtube-video-height",
+                defaultMessage: "YouTube Video Height",
+              })}
             />
           </Stack>
         </Stack>
@@ -117,7 +157,10 @@ export default function InsertYouTubeDialog({ editor, onExit }: DialogProps) {
       <DialogFooter
         startAction={
           <Button onClick={onExit} variant="tertiary">
-            Cancel
+            {formatMessage({
+              id: "rich-text.editor.dialog.button.cancel",
+              defaultMessage: "Cancel",
+            })}
           </Button>
         }
         endAction={
@@ -126,7 +169,10 @@ export default function InsertYouTubeDialog({ editor, onExit }: DialogProps) {
             onClick={() => onInsert({ src, width, height, fixedDimensions })}
             variant="success-light"
           >
-            Insert YouTube Embed
+            {formatMessage({
+              id: "rich-text.editor.dialog.button.insert-youtube-embed",
+              defaultMessage: "Insert YouTube Embed",
+            })}
           </Button>
         }
       />

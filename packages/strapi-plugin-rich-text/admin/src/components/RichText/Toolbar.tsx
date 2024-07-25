@@ -13,6 +13,7 @@ import {
   Link,
   Minus,
 } from "@strapi/icons";
+import { useIntl } from "react-intl";
 
 import AbbrDialog from "./Dialogs/AbbrDialog";
 import InsertLinkDialog from "./Dialogs/InsertLinkDialog";
@@ -30,6 +31,8 @@ export default function Toolbar({ editor }: ToolbarProps) {
     "insertLink" | "insertYouTube" | "abbr" | false
   >(false);
 
+  const { formatMessage } = useIntl();
+
   if (!editor) {
     return null;
   }
@@ -46,34 +49,49 @@ export default function Toolbar({ editor }: ToolbarProps) {
               <IconButtonGroup>
                 <IconButton
                   icon={<Bold />}
-                  label="Bold"
+                  label={formatMessage({
+                    id: "rich-text.editor.toolbar.button.bold",
+                    defaultMessage: "Bold",
+                  })}
                   onClick={() => editor.chain().focus().toggleBold().run()}
                   disabled={!editor.can().chain().focus().toggleBold().run()}
                   className={editor.isActive("bold") ? "is-active" : ""}
                 />
                 <IconButton
                   icon={<Italic />}
-                  label="Italic"
+                  label={formatMessage({
+                    id: "rich-text.editor.toolbar.button.italic",
+                    defaultMessage: "Italic",
+                  })}
                   onClick={() => editor.chain().focus().toggleItalic().run()}
                   disabled={!editor.can().chain().focus().toggleItalic().run()}
                   className={editor.isActive("italic") ? "is-active" : ""}
                 />
                 <IconButton
                   icon={<Underline />}
-                  label="Underline"
+                  label={formatMessage({
+                    id: "rich-text.editor.toolbar.button.underline",
+                    defaultMessage: "Underline",
+                  })}
                   className={editor.isActive("underline") ? "is-active" : ""}
                   onClick={() => editor.chain().focus().toggleUnderline().run()}
                 />
                 <IconButton
                   icon={<StrikeThrough />}
-                  label="Strike"
+                  label={formatMessage({
+                    id: "rich-text.editor.toolbar.button.strike",
+                    defaultMessage: "Strike",
+                  })}
                   onClick={() => editor.chain().focus().toggleStrike().run()}
                   disabled={!editor.can().chain().focus().toggleStrike().run()}
                   className={editor.isActive("strike") ? "is-active" : ""}
                 />
                 <IconButton
                   icon={<Link />}
-                  label="Link"
+                  label={formatMessage({
+                    id: "rich-text.editor.toolbar.button.link",
+                    defaultMessage: "Link",
+                  })}
                   className={editor.isActive("link") ? "is-active" : ""}
                   onClick={() => setOpenDialog("insertLink")}
                 />
@@ -89,14 +107,20 @@ export default function Toolbar({ editor }: ToolbarProps) {
                 </IconButton>
                 <IconButton
                   icon={<Minus />}
-                  label="Horizontal line"
+                  label={formatMessage({
+                    id: "rich-text.editor.toolbar.button.horizontal-line",
+                    defaultMessage: "Horizontal line",
+                  })}
                   onClick={() =>
                     editor.chain().focus().setHorizontalRule().run()
                   }
                 />
                 <IconButton
                   icon={<Youtube />}
-                  label="YouTube"
+                  label={formatMessage({
+                    id: "rich-text.editor.toolbar.button.youtube",
+                    defaultMessage: "YouTube",
+                  })}
                   className={[
                     "large-icon",
                     editor.isActive("youtube") ? "is-active" : "",
@@ -107,13 +131,19 @@ export default function Toolbar({ editor }: ToolbarProps) {
               <IconButtonGroup>
                 <IconButton
                   icon={<ArrowLeft style={{ width: "0.7rem" }} />}
-                  label="Undo"
+                  label={formatMessage({
+                    id: "rich-text.editor.toolbar.button.undo",
+                    defaultMessage: "Undo",
+                  })}
                   onClick={() => editor.chain().focus().undo().run()}
                   disabled={!editor.can().chain().focus().undo().run()}
                 />
                 <IconButton
                   icon={<ArrowRight style={{ width: "0.7rem" }} />}
-                  label="Redo"
+                  label={formatMessage({
+                    id: "rich-text.editor.toolbar.button.redo",
+                    defaultMessage: "Redo",
+                  })}
                   onClick={() => editor.chain().focus().redo().run()}
                   disabled={!editor.can().chain().focus().redo().run()}
                 />
