@@ -97,6 +97,12 @@ export const StyledEditor = styled("div")`
       line-height: 1.1;
     }
 
+    abbr[title] {
+      text-decoration: underline dotted;
+      cursor: help;
+      text-decoration-skip-ink: none;
+    }
+
     pre {
       background: #0d0d0d;
       color: #fff;
