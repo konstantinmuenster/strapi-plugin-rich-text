@@ -59,7 +59,7 @@ export default function InsertYouTubeDialog({ editor, onExit }: DialogProps) {
     <Dialog
       onClose={onExit}
       title={formatMessage({
-        id: "editor.dialog.title.insert-youtube-embed",
+        id: "rich-text.editor.dialog.title.insert-youtube-embed",
         defaultMessage: "Insert YouTube embed",
       })}
       isOpen={true}

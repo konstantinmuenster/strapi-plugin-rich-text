@@ -1,4 +1,8 @@
 {
+  "editor.toolbar.button.danger": "Tehlike",
+  "editor.toolbar.button.information": "Bilgi",
+  "editor.toolbar.button.success": "Başarı",
+  "editor.toolbar.button.warning": "Uyarı",
   "editor.toolbar.button.bold": "Kalın",
   "editor.toolbar.button.italic": "İtalik",
   "editor.toolbar.button.underline": "Altı çizili",

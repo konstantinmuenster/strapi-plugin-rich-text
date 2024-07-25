@@ -58,7 +58,7 @@ export default function InsertLinkDialog({ editor, onExit }: DialogProps) {
     <Dialog
       onClose={onClose}
       title={formatMessage({
-        id: "editor.dialog.title.insert-link",
+        id: "rich-text.editor.dialog.title.insert-link",
         defaultMessage: "Insert link",
       })}
       isOpen={true}
@@ -115,7 +115,7 @@ export default function InsertLinkDialog({ editor, onExit }: DialogProps) {
           >
             {formatMessage(
               {
-                id: "editor.dialog.button.link-confirm",
+                id: "rich-text.editor.dialog.button.link-confirm",
                 defaultMessage: "{action} Link",
               },
               {

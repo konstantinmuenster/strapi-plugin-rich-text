@@ -1,4 +1,8 @@
 {
+  "editor.toolbar.button.danger": "Danger",
+  "editor.toolbar.button.information": "Information",
+  "editor.toolbar.button.success": "Success",
+  "editor.toolbar.button.warning": "Warning",
   "editor.toolbar.button.bold": "Bold",
   "editor.toolbar.button.italic": "Italic",
   "editor.toolbar.button.underline": "Underline",

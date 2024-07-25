@@ -7,10 +7,13 @@ import {
   //   WarningCircle,
 } from "@strapi/icons";
 import { Editor, FloatingMenu } from "@tiptap/react";
+import { useIntl } from "react-intl";
 
 import { StyledToolbar } from "./AlertToolbar.styles";
 
 export default function AlertToolbar({ editor }: { editor: Editor }) {
+  const { formatMessage } = useIntl();
+
   return (
     <FloatingMenu
       editor={editor}
@@ -28,7 +31,10 @@ export default function AlertToolbar({ editor }: { editor: Editor }) {
         <IconButtonGroup>
           <IconButton
             icon={<CrossCircle />}
-            label="Danger"
+            label={formatMessage({
+              id: "rich-text.editor.toolbar.button.danger",
+              defaultMessage: "Danger",
+            })}
             onClick={() =>
               editor.chain().focus().toggleAlert({ type: "danger" }).run()
             }
@@ -46,7 +52,10 @@ export default function AlertToolbar({ editor }: { editor: Editor }) {
           />
           <IconButton
             icon={<Information />}
-            label="Information"
+            label={formatMessage({
+              id: "rich-text.editor.toolbar.button.info",
+              defaultMessage: "Information",
+            })}
             onClick={() =>
               editor.chain().focus().toggleAlert({ type: "info" }).run()
             }
@@ -59,7 +68,10 @@ export default function AlertToolbar({ editor }: { editor: Editor }) {
           />
           <IconButton
             icon={<CheckCircle />}
-            label="Success"
+            label={formatMessage({
+              id: "rich-text.editor.toolbar.button.success",
+              defaultMessage: "Success",
+            })}
             onClick={() =>
               editor.chain().focus().toggleAlert({ type: "success" }).run()
             }
@@ -80,7 +92,10 @@ export default function AlertToolbar({ editor }: { editor: Editor }) {
               //   <WarningCircle />
               <ExclamationMarkCircle />
             }
-            label="Warning"
+            label={formatMessage({
+              id: "rich-text.editor.toolbar.button.warning",
+              defaultMessage: "Warning",
+            })}
             onClick={() =>
               editor.chain().focus().toggleAlert({ type: "warning" }).run()
             }
