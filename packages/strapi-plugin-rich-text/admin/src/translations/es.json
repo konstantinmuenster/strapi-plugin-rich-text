@@ -1,4 +1,5 @@
 {
+  "editor.toolbar.button.abbreviation": "Abreviatura",
   "editor.toolbar.button.bold": "Negrita",
   "editor.toolbar.button.italic": "Cursiva",
   "editor.toolbar.button.underline": "Subrayado",
@@ -19,6 +20,7 @@
   "editor.toolbar.select.quote": "Cita",
   "editor.toolbar.select.ordered-list": "Lista Ordenada",
   "editor.toolbar.select.bullet-list": "Lista de Viñetas",
+  "editor.dialog.button.abbreviation-confirm": "{action, select, Remove {Remover Abreviatura} Insert {Insertar Abreviatura}}",
   "editor.dialog.button.cancel": "Cancelar",
   "editor.dialog.button.insert-youtube-embed": "Insertar incrustación de YouTube",
   "editor.dialog.button.link-confirm": "{action, select, Remove {Eliminar Enlace} Insert {Insertar Enlace}}",
@@ -26,15 +28,18 @@
   "editor.dialog.checkbox.set-fixed-dimensions": "Establecer Dimensiones Fijas",
   "editor.dialog.label.height": "Altura",
   "editor.dialog.label.link-url": "URL del enlace",
+  "editor.dialog.label.title": "Título",
   "editor.dialog.label.url": "URL",
   "editor.dialog.label.width": "Anchura",
   "editor.dialog.label.youtube-video-height": "Altura del vídeo de YouTube",
   "editor.dialog.label.youtube-url": "URL de YouTube",
   "editor.dialog.label.youtube-video-width": "Anchura del vídeo de YouTube",
   "editor.dialog.placeholder.height": "Agregar Altura",
+  "editor.dialog.placeholder.abbreviation-title": "Título de la abreviatura",
   "editor.dialog.placeholder.link-url": "Escribe o pega la URL aquí",
   "editor.dialog.placeholder.youtube-url": "Agregar URL de YouTube",
   "editor.dialog.placeholder.width": "Agregar Anchura",
+  "editor.dialog.title.insert-abbreviation": "Insertar Abreviatura",
   "editor.dialog.title.insert-link": "Insertar Enlace",
   "editor.dialog.title.insert-youtube-embed": "Insertar incrustación de YouTube"
 }
