@@ -6,9 +6,11 @@ export const StyledEditor = styled("div")`
 
   .tiptap {
     outline: none;
+    overflow-y: auto;
     line-height: 1.25rem;
     color: ${({ theme }) => theme.colors.neutral800};
     min-height: 80px;
+    max-height: 70vh;
     padding: 0 1.5rem 1.5rem 1.5rem;
 
     border-bottom-left-radius: 5px;
@@ -35,6 +37,37 @@ export const StyledEditor = styled("div")`
       border: 2px solid ${({ theme }) => theme.colors.neutral800};
       pointer-events: none;
       border-radius: 5px;
+    }
+
+    p:where(.warning, .success, .info, .danger) {
+      border-radius: 0.5rem;
+      padding: 1rem;
+      margin-block: 1rem;
+      word-break: break-word;
+    }
+
+    p.warning {
+      color: rgba(242, 157, 65, 1);
+      background: rgba(253, 244, 220, 1);
+      text-align: center;
+    }
+
+    p.success {
+      color: rgba(92, 177, 118, 1);
+      background: rgba(234, 251, 231, 1);
+      text-align: left;
+    }
+
+    p.info {
+      color: rgba(102, 183, 241, 1);
+      background: rgba(234, 245, 255, 1);
+      text-align: left;
+    }
+
+    p.danger {
+      color: rgba(238, 94, 82, 1);
+      background: rgba(252, 236, 234, 1);
+      text-align: center;
     }
 
     strong {
@@ -95,6 +128,12 @@ export const StyledEditor = styled("div")`
     h5,
     h6 {
       line-height: 1.1;
+    }
+
+    abbr[title] {
+      text-decoration: underline dotted;
+      cursor: help;
+      text-decoration-skip-ink: none;
     }
 
     pre {
