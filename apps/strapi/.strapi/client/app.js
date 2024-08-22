@@ -8,7 +8,11 @@ import strapiCloud from "@strapi/plugin-cloud/strapi-admin";
 import strapiPluginRichText from "../../node_modules/strapi-plugin-rich-text/strapi-admin";
 import { renderAdmin } from "@strapi/strapi/admin";
 
+import customisations from "../../src/admin/app.tsx";
+
 renderAdmin(document.getElementById("strapi"), {
+  customisations,
+
   plugins: {
     "users-permissions": usersPermissions,
     i18n: i18N,
