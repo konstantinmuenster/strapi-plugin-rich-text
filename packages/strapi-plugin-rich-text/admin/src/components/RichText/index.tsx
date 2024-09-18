@@ -1,12 +1,18 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Stack } from "@strapi/design-system/Stack";
 import { Box } from "@strapi/design-system/Box";
+import { Flex } from "@strapi/design-system/Flex";
 import { Field, FieldLabel } from "@strapi/design-system/Field";
+import { Loader } from "@strapi/design-system/Loader";
 import { Typography } from "@strapi/design-system/Typography";
 import { useIntl } from "react-intl";
+import { useQuery } from "react-query";
 
-import Editor, { isRichText } from "./Editor";
 import { createHTMLFromMarkdown } from "../../lib/markdown";
+import { getSettings } from "../../utils/api";
+import { Settings } from "../../../../types/settings";
+
+import Editor, { isHTMLText, isJSONText } from "./Editor";
 
 interface RichTextProps {
   error: string;
@@ -53,16 +59,23 @@ export default function RichText({
   disabled,
   error,
 }: RichTextProps) {
-  const { formatMessage } = useIntl();
   const [shouldMountEditor, setShouldMountEditor] = useState(false);
+  const { formatMessage } = useIntl();
 
   const content = useMemo(() => {
     if (value) {
-      return isRichText(value) ? value : createHTMLFromMarkdown(value);
+      return isHTMLText(value) || isJSONText(value)
+        ? value
+        : createHTMLFromMarkdown(value);
     } else {
       return "";
     }
   }, [value]);
+
+  const { data: settings, isLoading } = useQuery<Settings>(
+    "settings",
+    getSettings
+  );
 
   const handleChange = useCallback(
     (value: string) => {
@@ -81,6 +94,31 @@ export default function RichText({
     setShouldMountEditor(true);
   }, []);
 
+  if (isLoading) {
+    return (
+      <Field required={required}>
+        <Stack spacing={1}>
+          <Box>
+            <FieldLabel action={labelAction}>
+              {formatMessage(intlLabel)}
+            </FieldLabel>
+          </Box>
+
+          <Flex justifyContent="center" alignItems="center">
+            <Box>
+              <Loader>
+                {formatMessage({
+                  id: "rich-text.editor.loading-content",
+                  defaultMessage: "Loading editor...",
+                })}
+              </Loader>
+            </Box>
+          </Flex>
+        </Stack>
+      </Field>
+    );
+  }
+
   return (
     <Field required={required}>
       <Stack spacing={1}>
@@ -95,6 +133,7 @@ export default function RichText({
             onChange={handleChange}
             placeholder={placeholder}
             disabled={disabled}
+            settings={settings}
           />
         )}
         {error && (

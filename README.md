@@ -1,6 +1,6 @@
 # 🛹 Strapi Plugin Rich Text
 
-#### A WYSIWYG editor for your rich text fields
+A WYSIWYG editor for your rich text fields.
 
 This Strapi plugin replaces the Markdown editor with a visual, easy-to-use text editor.
 
@@ -19,7 +19,7 @@ The plugin stores the content in HTML format. When querying content on the front
 
 ## Getting Started
 
-#### Install
+### Install
 
 ```bash
 pnpm install strapi-plugin-rich-text
@@ -29,6 +29,42 @@ pnpm run build
 ```
 
 After this, the `Rich Text` plugin should show up in your list of Plugins in the admin panel.
+
+#### Add the following to the webpack config (/src/admin/webpack.config.js)
+
+This is due to tippy.js doesn't have an ES6 module, and a tiptap depencency imports it as such.
+
+```javascript
+config.plugins.push(new webpack.NormalModuleReplacementPlugin(
+  /^tippy\.js$/,
+  'tippy.js/dist/tippy-bundle.umd.min.js'
+))
+```
+
+#### Add the following to middlewares config (/config/middlewares.js)
+
+You need to add "frame-src": ["'self'", "www.youtube.com"] to the content security policy to allow embedding YouTube videos in your Strapi editor.
+
+```javascript
+export default [
+  // other policies
+  {
+    name: "strapi::security",
+    config: {
+      contentSecurityPolicy: {
+        useDefaults: true,
+        directives: {
+          "connect-src": ["'self'", "http:", "https:"],
+          "frame-src": ["'self'", "www.youtube.com"],
+          upgradeInsecureRequests: null,
+        },
+      },
+    },
+  },
+ // other policies
+];
+
+```
 
 #### Configuration
 
@@ -50,10 +86,8 @@ This project includes an exemplary Strapi installation, which you can use to tes
 
 You can start the development server via `pnpm dev` and access the Strapi admin with the following user credentials:
 
-```
-E-Mail Address: user@strapi.plugin.rich.text
-Password: dummyAdmin123
-```
+> E-Mail Address: user@strapi.plugin.rich.text
+> Password: dummyAdmin123
 
 The Strapi admin already contains some playgrounds to test the editor.
 
