@@ -6,7 +6,9 @@ export default [
       contentSecurityPolicy: {
         useDefaults: true,
         directives: {
-          "frame-src": ["'self'", "https://www.youtube.com"],
+          "connect-src": ["'self'", "http:", "https:"],
+          "frame-src": ["'self'", "www.youtube.com"],
+          upgradeInsecureRequests: null,
         },
       },
     },
