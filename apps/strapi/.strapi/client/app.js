@@ -5,14 +5,18 @@
 import usersPermissions from "@strapi/plugin-users-permissions/strapi-admin";
 import i18N from "@strapi/plugin-i18n/strapi-admin";
 import strapiCloud from "@strapi/plugin-cloud/strapi-admin";
-import strapiPluginRichText from "../../node_modules/strapi-plugin-rich-text/strapi-admin";
+import richtextEditor from "../../node_modules/strapi-plugin-rich-text/strapi-admin";
 import { renderAdmin } from "@strapi/strapi/admin";
 
+import customisations from "../../src/admin/app.tsx";
+
 renderAdmin(document.getElementById("strapi"), {
+  customisations,
+
   plugins: {
     "users-permissions": usersPermissions,
     i18n: i18N,
     "strapi-cloud": strapiCloud,
-    "strapi-plugin-rich-text": strapiPluginRichText,
+    "richtext-editor": richtextEditor,
   },
 });
