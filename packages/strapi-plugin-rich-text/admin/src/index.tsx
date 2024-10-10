@@ -5,13 +5,43 @@ import pluginId from "./pluginId";
 import Initializer from "./components/Initializer";
 import RichText from "./components/RichText";
 
+const pluginDescription = pluginPkg.strapi.description || pluginPkg.description;
 const name = pluginPkg.strapi.name;
+
+const SettingsPage = async () => {
+  const page = await import("./pages/App");
+
+  return page;
+};
 
 export default {
   register(app: any) {
+    app.createSettingSection(
+      {
+        id: pluginId,
+        intlLabel: {
+          id: "rich-text.plugin.name",
+          defaultMessage: "RichText Editor",
+        },
+      },
+      [
+        {
+          intlLabel: {
+            id: "rich-text.plugin.settings",
+            defaultMessage: "Settings",
+          },
+          id: "Settings",
+          to: `/settings/${name}`,
+          Component: SettingsPage,
+          permissions: [], // todo
+        },
+      ]
+    );
+
     app.addFields({ type: "wysiwyg", Component: RichText });
 
     app.registerPlugin({
+      description: pluginDescription,
       id: pluginId,
       initializer: Initializer,
       isReady: false,
