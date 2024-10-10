@@ -1,10 +1,3 @@
-export default [
-  {
-    method: 'GET',
-    path: '/',
-    handler: 'myController.index',
-    config: {
-      policies: [],
-    },
-  },
-];
+import settings from "./settings";
+
+export default { settings };

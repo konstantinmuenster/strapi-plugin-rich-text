@@ -13,14 +13,14 @@
     "@types/node": "^20.10.1"
   },
   "dependencies": {
-    "@strapi/strapi": "^4.25.3",
-    "@strapi/plugin-users-permissions": "^4.25.3",
-    "@strapi/plugin-i18n": "^4.25.3",
-    "@strapi/plugin-cloud": "^4.25.3",
-    "@strapi/typescript-utils": "^4.25.3",
+    "@strapi/strapi": "4.25.13",
+    "@strapi/plugin-users-permissions": "4.25.13",
+    "@strapi/plugin-i18n": "4.25.13",
+    "@strapi/plugin-cloud": "4.25.13",
+    "@strapi/typescript-utils": "4.25.13",
     "better-sqlite3": "8.6.0",
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
     "react-router-dom": "5.3.4",
     "strapi-plugin-rich-text": "workspace:*",
     "styled-components": "5.3.3"

@@ -6,7 +6,7 @@ export default {
       // 'cs',
       // 'de',
       // 'dk',
-      // 'es',
+      "es",
       // 'he',
       // 'id',
       // 'it',
@@ -22,14 +22,14 @@ export default {
       // 'sk',
       // 'sv',
       // 'th',
-      // 'tr',
+      "tr",
       // 'uk',
       // 'vi',
       // 'zh-Hans',
       // 'zh',
     ],
   },
-  bootstrap(app) {
-    console.log(app);
+  bootstrap(/* app */) {
+    //    console.log(app);
   },
 };
