@@ -1,5 +1,6 @@
-import { ChangeEvent, useCallback, useEffect, useState } from "react";
-import { Editor } from "@tiptap/react";
+import { useRef, useState } from "react";
+import { useIntl } from "react-intl";
+
 import { Box } from "@strapi/design-system/Box";
 import { Flex } from "@strapi/design-system/Flex";
 import { IconButton, IconButtonGroup } from "@strapi/design-system/IconButton";
@@ -7,33 +8,120 @@ import {
   ArrowLeft,
   ArrowRight,
   Bold,
+  Code,
   Italic,
-  StrikeThrough,
-  Underline,
   Link,
   Minus,
+  PaintBrush,
+  Pencil,
+  StrikeThrough,
+  Underline,
 } from "@strapi/icons";
-import { Dialog, DialogBody, DialogFooter } from "@strapi/design-system/Dialog";
-import { Stack } from "@strapi/design-system/Stack";
-import { Button } from "@strapi/design-system/Button";
-import { TextInput } from "@strapi/design-system/TextInput";
-import { Select, Option } from "@strapi/design-system/Select";
-import { Checkbox } from "@strapi/design-system/Checkbox";
+import { Editor } from "@tiptap/react";
 
+import {
+  getUpdatedAudio,
+  getUpdatedFile,
+  getUpdatedImage,
+  getUpdatedVideo,
+} from "../../lib/media";
+import { AllowedTypes, Asset, DialogTypes } from "../../types";
+import { rgbaToHex, rgbStringToRgba, validHex } from "../../lib/color";
+import { Settings } from "../../../../types/settings";
+
+import BlockTypeSelect from "./Components/BlockTypeSelect";
+import ColorPickerPopover from "./Components/ColorPickerPopover";
+import AbbrDialog from "./Dialogs/AbbrDialog";
+import Base64ImageDialog from "./Dialogs/Base64ImageDialog";
+import InsertLinkDialog from "./Dialogs/InsertLinkDialog";
+import InsertYouTubeDialog from "./Dialogs/InsertYouTubeDialog";
+import MediaLibraryDialog from "./Dialogs/MediaLibraryDialog";
+import Youtube from "./Icons/Youtube";
+import AlignLeft from "./Icons/AlignLeft";
+import AlignCenter from "./Icons/AlignCenter";
+import AlignRight from "./Icons/AlignRight";
+import NewTableIcon from "./Icons/Table/NewTable";
+import Movie from "./Icons/Media/Movie";
+import Music from "./Icons/Media/Music";
+import PaperClip from "./Icons/Media/PaperClip";
+import Photo from "./Icons/Media/Photo";
+import PhotoBitcoin from "./Icons/Media/PhotoBitcoin";
 import { StyledToolbar } from "./Toolbar.styles";
 
 interface ToolbarProps {
   editor: Editor | null;
+  settings: Settings;
 }
 
-export default function Toolbar({ editor }: ToolbarProps) {
-  const [openDialog, setOpenDialog] = useState<
-    "insertLink" | "insertYouTube" | false
-  >(false);
+export default function Toolbar({ editor, settings }: ToolbarProps) {
+  const colorSourceRef = useRef(null);
+  const highlightSourceRef = useRef(null!);
+
+  const [openDialog, setOpenDialog] = useState<DialogTypes | false>(false);
+  const [mediaType, setMediaType] = useState<Array<AllowedTypes> | undefined>();
+  const [forceInsert, setForceInsert] = useState(false);
+  const [color, setColor] = useState<string>();
+  const [base64Image, setBase64Image] = useState("");
+
+  const { formatMessage } = useIntl();
 
   if (!editor) {
     return null;
   }
+
+  const handleChangeAssets = (assets: Array<Asset>) => {
+    if (mediaType?.includes("audios"))
+      assets.forEach((asset) => {
+        if (asset.mime.includes("audio")) {
+          const { id, name, src } = getUpdatedAudio(asset);
+
+          if (!forceInsert)
+            editor.chain().focus().setAudio(String(id), name, src).run();
+          else editor.commands.setAudio(String(id), name, src);
+        }
+      });
+
+    if (mediaType?.includes("files")) {
+      const attachments = assets
+        .filter(
+          (asset) =>
+            asset.mime.includes("application") || asset.mime.includes("text")
+        )
+        .map((asset) => getUpdatedFile(asset));
+
+      if (!forceInsert) editor.chain().focus().setAttachment(attachments).run();
+      else editor.commands.setAttachment(attachments);
+    }
+
+    if (mediaType?.includes("images"))
+      assets.forEach((asset) => {
+        if (asset.mime.includes("image")) {
+          const image = getUpdatedImage(asset);
+
+          if (!forceInsert) editor.chain().focus().setImage(image).run();
+          else editor.commands.setImage(image);
+        }
+      });
+
+    if (mediaType?.includes("videos")) {
+      assets.forEach((asset) => {
+        if (asset.mime.includes("video")) {
+          const { id, src, width, height } = getUpdatedVideo(asset);
+
+          if (!forceInsert)
+            editor
+              .chain()
+              .focus()
+              .setVideo(String(id), src, width, height)
+              .run();
+          else editor.commands.setVideo(String(id), src, width, height);
+        }
+      });
+    }
+
+    setForceInsert(false);
+    setMediaType(undefined);
+  };
 
   return (
     <>
@@ -42,71 +130,334 @@ export default function Toolbar({ editor }: ToolbarProps) {
           <Flex justifyContent="space-between">
             <Flex style={{ flexWrap: "wrap", gap: "8px" }}>
               <Box>
-                <BlockTypeSelect editor={editor} />
+                <BlockTypeSelect editor={editor} settings={settings} />
               </Box>
               <IconButtonGroup>
-                <IconButton
-                  icon={<Bold />}
-                  label="Bold"
-                  onClick={() => editor.chain().focus().toggleBold().run()}
-                  disabled={!editor.can().chain().focus().toggleBold().run()}
-                  className={editor.isActive("bold") ? "is-active" : ""}
-                />
-                <IconButton
-                  icon={<Italic />}
-                  label="Italic"
-                  onClick={() => editor.chain().focus().toggleItalic().run()}
-                  disabled={!editor.can().chain().focus().toggleItalic().run()}
-                  className={editor.isActive("italic") ? "is-active" : ""}
-                />
-                <IconButton
-                  icon={<Underline />}
-                  label="Underline"
-                  className={editor.isActive("underline") ? "is-active" : ""}
-                  onClick={() => editor.chain().focus().toggleUnderline().run()}
-                />
-                <IconButton
-                  icon={<StrikeThrough />}
-                  label="Strike"
-                  onClick={() => editor.chain().focus().toggleStrike().run()}
-                  disabled={!editor.can().chain().focus().toggleStrike().run()}
-                  className={editor.isActive("strike") ? "is-active" : ""}
-                />
-                <IconButton
-                  icon={<Link />}
-                  label="Link"
-                  className={editor.isActive("link") ? "is-active" : ""}
-                  onClick={() => setOpenDialog("insertLink")}
-                />
+                {settings.bold ? (
+                  <IconButton
+                    icon={<Bold />}
+                    label={formatMessage({
+                      id: "rich-text.editor.toolbar.button.bold",
+                      defaultMessage: "Bold",
+                    })}
+                    onClick={() => editor.chain().focus().toggleBold().run()}
+                    disabled={!editor.can().chain().focus().toggleBold().run()}
+                    className={editor.isActive("bold") ? "is-active" : ""}
+                  />
+                ) : null}
+                {settings.italic ? (
+                  <IconButton
+                    icon={<Italic />}
+                    label={formatMessage({
+                      id: "rich-text.editor.toolbar.button.italic",
+                      defaultMessage: "Italic",
+                    })}
+                    onClick={() => editor.chain().focus().toggleItalic().run()}
+                    disabled={
+                      !editor.can().chain().focus().toggleItalic().run()
+                    }
+                    className={editor.isActive("italic") ? "is-active" : ""}
+                  />
+                ) : null}
+                {settings.underline ? (
+                  <IconButton
+                    icon={<Underline />}
+                    label={formatMessage({
+                      id: "rich-text.editor.toolbar.button.underline",
+                      defaultMessage: "Underline",
+                    })}
+                    className={editor.isActive("underline") ? "is-active" : ""}
+                    onClick={() =>
+                      editor.chain().focus().toggleUnderline().run()
+                    }
+                  />
+                ) : null}
+                {settings.strikethrough ? (
+                  <IconButton
+                    icon={<StrikeThrough />}
+                    label={formatMessage({
+                      id: "rich-text.editor.toolbar.button.strike",
+                      defaultMessage: "Strike",
+                    })}
+                    onClick={() => editor.chain().focus().toggleStrike().run()}
+                    disabled={
+                      !editor.can().chain().focus().toggleStrike().run()
+                    }
+                    className={editor.isActive("strike") ? "is-active" : ""}
+                  />
+                ) : null}
+                {settings.code ? (
+                  <IconButton
+                    icon={<Code />}
+                    label={formatMessage({
+                      id: "rich-text.editor.toolbar.button.code",
+                      defaultMessage: "Code",
+                    })}
+                    onClick={() => editor.chain().focus().toggleCode().run()}
+                    disabled={!editor.can().chain().focus().toggleCode().run()}
+                    className={editor.isActive("code") ? "is-active" : ""}
+                  />
+                ) : null}
+                {settings.color ? (
+                  <IconButton
+                    ref={colorSourceRef}
+                    icon={<PaintBrush />}
+                    label={formatMessage({
+                      id: "rich-text.editor.toolbar.button.color",
+                      defaultMessage: "Color",
+                    })}
+                    disabled={editor.view.state.selection.empty}
+                    onClick={() => {
+                      const stringColor =
+                        editor.getAttributes("textStyle").color;
+                      const color = validHex(stringColor)
+                        ? stringColor
+                        : rgbaToHex(rgbStringToRgba(stringColor));
+
+                      setColor(color);
+
+                      setOpenDialog("color");
+                    }}
+                  />
+                ) : null}
+                {settings.highlight ? (
+                  <IconButton
+                    ref={highlightSourceRef}
+                    icon={<Pencil />}
+                    label={formatMessage({
+                      id: "rich-text.editor.toolbar.button.highlight",
+                      defaultMessage: "Highlight",
+                    })}
+                    disabled={editor.view.state.selection.empty}
+                    onClick={() => {
+                      const stringColor =
+                        editor.getAttributes("highlight").color;
+                      const color = validHex(stringColor)
+                        ? stringColor
+                        : rgbaToHex(rgbStringToRgba(stringColor));
+
+                      setColor(color);
+                      setOpenDialog("highlight");
+                    }}
+                  />
+                ) : null}
+                {settings.links.enabled ? (
+                  <IconButton
+                    icon={<Link />}
+                    label={formatMessage({
+                      id: "rich-text.editor.toolbar.button.link",
+                      defaultMessage: "Link",
+                    })}
+                    className={editor.isActive("link") ? "is-active" : ""}
+                    onClick={() => setOpenDialog("insertLink")}
+                  />
+                ) : null}
               </IconButtonGroup>
+
               <IconButtonGroup>
-                <IconButton
-                  icon={<Minus />}
-                  label="Horizontal line"
-                  onClick={() =>
-                    editor.chain().focus().setHorizontalRule().run()
-                  }
-                />
-                <IconButton
-                  icon={ExtraIcons.YouTube}
-                  label="YouTube"
-                  className={[
-                    "large-icon",
-                    editor.isActive("youtube") ? "is-active" : "",
-                  ]}
-                  onClick={() => setOpenDialog("insertYouTube")}
-                />
+                {settings.align.includes("left") ? (
+                  <IconButton
+                    icon={<AlignLeft />}
+                    label={formatMessage({
+                      id: "rich-text.editor.toolbar.button.align-left",
+                      defaultMessage: "Left",
+                    })}
+                    onClick={() =>
+                      editor.chain().focus().setTextAlign("left").run()
+                    }
+                  />
+                ) : null}
+                {settings.align.includes("center") ? (
+                  <IconButton
+                    icon={<AlignCenter />}
+                    label={formatMessage({
+                      id: "rich-text.editor.toolbar.button.align-center",
+                      defaultMessage: "Center",
+                    })}
+                    onClick={() =>
+                      editor.chain().focus().setTextAlign("center").run()
+                    }
+                  />
+                ) : null}
+                {settings.align.includes("right") ? (
+                  <IconButton
+                    icon={<AlignRight />}
+                    label={formatMessage({
+                      id: "rich-text.editor.toolbar.button.align-right",
+                      defaultMessage: "Right",
+                    })}
+                    onClick={() =>
+                      editor.chain().focus().setTextAlign("right").run()
+                    }
+                  />
+                ) : null}
               </IconButtonGroup>
+
+              <IconButtonGroup>
+                {settings.audio ? (
+                  <IconButton
+                    icon={<Music />}
+                    label={formatMessage({
+                      id: "rich-text.editor.toolbar.button.media-audio",
+                      defaultMessage: "Audio",
+                    })}
+                    disabled={!editor.view.state.selection.empty}
+                    onClick={() => setMediaType(["audios"])}
+                    className={editor.isActive("audio") ? "is-active" : ""}
+                  />
+                ) : null}
+
+                {settings.file ? (
+                  <IconButton
+                    icon={<PaperClip />}
+                    label={formatMessage({
+                      id: "rich-text.editor.toolbar.button.media-file",
+                      defaultMessage: "File",
+                    })}
+                    disabled={!editor.view.state.selection.empty}
+                    onClick={() => setMediaType(["files"])}
+                    className={editor.isActive("attachment") ? "is-active" : ""}
+                  />
+                ) : null}
+
+                {settings.image.enabled ? (
+                  <IconButton
+                    icon={<Photo />}
+                    label={formatMessage({
+                      id: "rich-text.editor.toolbar.button.media-image",
+                      defaultMessage: "Image",
+                    })}
+                    disabled={!editor.view.state.selection.empty}
+                    onClick={() => setMediaType(["images"])}
+                    className={
+                      editor.isActive("image") &&
+                      !editor.getAttributes("image").src.includes(";base64")
+                        ? "is-active"
+                        : ""
+                    }
+                  />
+                ) : null}
+
+                {settings.image.allowBase64 ? (
+                  <IconButton
+                    icon={<PhotoBitcoin />}
+                    label={formatMessage({
+                      id: "rich-text.editor.toolbar.button.media-base-64-image",
+                      defaultMessage: "Base64 Image",
+                    })}
+                    className={
+                      editor.isActive("image") &&
+                      editor.getAttributes("image").src.includes(";base64")
+                        ? "is-active"
+                        : ""
+                    }
+                    onClick={() => {
+                      if (
+                        editor.getAttributes("image").src &&
+                        editor.getAttributes("image").src.includes(";base64")
+                      )
+                        setBase64Image(editor.getAttributes("image").src);
+
+                      setOpenDialog("base64Image");
+                    }}
+                  />
+                ) : null}
+
+                {settings.video ? (
+                  <IconButton
+                    icon={<Movie />}
+                    label={formatMessage({
+                      id: "rich-text.editor.toolbar.button.media-video",
+                      defaultMessage: "Video",
+                    })}
+                    disabled={!editor.view.state.selection.empty}
+                    onClick={() => setMediaType(["videos"])}
+                    className={editor.isActive("video") ? "is-active" : ""}
+                  />
+                ) : null}
+              </IconButtonGroup>
+
+              <IconButtonGroup>
+                {settings.abbreviation ? (
+                  <IconButton
+                    label={formatMessage({
+                      id: "rich-text.editor.toolbar.button.abbreviation",
+                      defaultMessage: "Abbreviation",
+                    })}
+                    onClick={() => setOpenDialog("abbr")}
+                    disabled={
+                      !editor.can().chain().focus().toggleAbbr("").run()
+                    }
+                    className={editor.isActive("abbr") ? "is-active" : ""}
+                  >
+                    <span>Ab</span>
+                  </IconButton>
+                ) : null}
+                {settings.horizontal ? (
+                  <IconButton
+                    icon={<Minus />}
+                    label={formatMessage({
+                      id: "rich-text.editor.toolbar.button.horizontal-line",
+                      defaultMessage: "Horizontal line",
+                    })}
+                    onClick={() =>
+                      editor.chain().focus().setHorizontalRule().run()
+                    }
+                  />
+                ) : null}
+                {settings.table ? (
+                  <IconButton
+                    icon={<NewTableIcon />}
+                    label={formatMessage({
+                      id: "rich-text.editor.toolbar.button.table",
+                      defaultMessage: "Table",
+                    })}
+                    className={editor.isActive("table") ? "is-active" : ""}
+                    disabled={
+                      editor.view.state.selection.$head.parent.content.size !==
+                      0
+                    }
+                    onClick={() =>
+                      editor
+                        .chain()
+                        .focus()
+                        .insertTable({ cols: 3, rows: 3, withHeaderRow: true })
+                        .run()
+                    }
+                  />
+                ) : null}
+                {settings.youtube.enabled ? (
+                  <IconButton
+                    icon={<Youtube />}
+                    label={formatMessage({
+                      id: "rich-text.editor.toolbar.button.youtube",
+                      defaultMessage: "YouTube",
+                    })}
+                    className={[
+                      "large-icon",
+                      editor.isActive("youtube") ? "is-active" : "",
+                    ]}
+                    onClick={() => setOpenDialog("insertYouTube")}
+                  />
+                ) : null}
+              </IconButtonGroup>
+
               <IconButtonGroup>
                 <IconButton
                   icon={<ArrowLeft style={{ width: "0.7rem" }} />}
-                  label="Undo"
+                  label={formatMessage({
+                    id: "rich-text.editor.toolbar.button.undo",
+                    defaultMessage: "Undo",
+                  })}
                   onClick={() => editor.chain().focus().undo().run()}
                   disabled={!editor.can().chain().focus().undo().run()}
                 />
                 <IconButton
                   icon={<ArrowRight style={{ width: "0.7rem" }} />}
-                  label="Redo"
+                  label={formatMessage({
+                    id: "rich-text.editor.toolbar.button.redo",
+                    defaultMessage: "Redo",
+                  })}
                   onClick={() => editor.chain().focus().redo().run()}
                   disabled={!editor.can().chain().focus().redo().run()}
                 />
@@ -115,333 +466,66 @@ export default function Toolbar({ editor }: ToolbarProps) {
           </Flex>
         </Box>
       </StyledToolbar>
-      {openDialog === "insertLink" && (
+
+      {settings.abbreviation && openDialog === "abbr" && (
+        <AbbrDialog editor={editor} onExit={() => setOpenDialog(false)} />
+      )}
+
+      {settings.color && openDialog === "color" && (
+        <ColorPickerPopover
+          ref={colorSourceRef}
+          color={color}
+          onExit={() => setOpenDialog(false)}
+          onRemove={() => editor.commands.unsetColor()}
+          onChange={(color: string) =>
+            editor.chain().focus().setColor(color).run()
+          }
+        />
+      )}
+
+      {settings.highlight && openDialog === "highlight" && (
+        <ColorPickerPopover
+          ref={highlightSourceRef}
+          color={color}
+          onExit={() => setOpenDialog(false)}
+          onRemove={() => editor.commands.unsetHighlight()}
+          onChange={(color: string) =>
+            editor
+              .chain()
+              .focus()
+              .toggleHighlight({
+                color,
+              })
+              .run()
+          }
+        />
+      )}
+
+      {settings.links.enabled && openDialog === "insertLink" && (
         <InsertLinkDialog editor={editor} onExit={() => setOpenDialog(false)} />
       )}
-      {openDialog === "insertYouTube" && (
+
+      {settings.youtube.enabled && openDialog === "insertYouTube" && (
         <InsertYouTubeDialog
           editor={editor}
           onExit={() => setOpenDialog(false)}
         />
       )}
+
+      {settings.image.allowBase64 && openDialog === "base64Image" && (
+        <Base64ImageDialog
+          base64Image={base64Image}
+          editor={editor}
+          onExit={() => setOpenDialog(false)}
+        />
+      )}
+
+      <MediaLibraryDialog
+        allowedTypes={mediaType}
+        isOpen={mediaType !== undefined}
+        onChange={handleChangeAssets}
+        onToggle={() => setMediaType(undefined)}
+      />
     </>
   );
 }
-
-function BlockTypeSelect({ editor }: { editor: Editor }) {
-  const [selectedType, setSelectedType] = useState<string>("paragraph");
-
-  const onSelect = useCallback((type: string) => {
-    switch (type) {
-      case "h1":
-        editor.chain().focus().toggleHeading({ level: 1 }).run();
-        break;
-      case "h2":
-        editor.chain().focus().toggleHeading({ level: 2 }).run();
-        break;
-      case "h3":
-        editor.chain().focus().toggleHeading({ level: 3 }).run();
-        break;
-      case "h4":
-        editor.chain().focus().toggleHeading({ level: 4 }).run();
-        break;
-      case "h5":
-        editor.chain().focus().toggleHeading({ level: 5 }).run();
-        break;
-      case "h6":
-        editor.chain().focus().toggleHeading({ level: 6 }).run();
-        break;
-      case "blockquote":
-        editor.chain().focus().toggleBlockquote().run();
-        break;
-      case "orderedList":
-        editor.chain().focus().toggleOrderedList().run();
-        break;
-      case "bulletList":
-        editor.chain().focus().toggleBulletList().run();
-        break;
-      case "paragraph":
-        editor.chain().focus().setParagraph().run();
-        break;
-    }
-
-    setTimeout(() => {
-      editor.commands.focus();
-    }, 50);
-  }, []);
-
-  const setActiveType = useCallback(() => {
-    if (editor.isActive("heading", { level: 1 })) setSelectedType("h1");
-    if (editor.isActive("heading", { level: 2 })) setSelectedType("h2");
-    if (editor.isActive("heading", { level: 3 })) setSelectedType("h3");
-    if (editor.isActive("heading", { level: 4 })) setSelectedType("h4");
-    if (editor.isActive("heading", { level: 5 })) setSelectedType("h5");
-    if (editor.isActive("heading", { level: 6 })) setSelectedType("h6");
-    if (editor.isActive("paragraph")) setSelectedType("paragraph");
-    if (editor.isActive("blockquote")) setSelectedType("blockquote");
-    if (editor.isActive("orderedList")) setSelectedType("orderedList");
-    if (editor.isActive("bulletList")) setSelectedType("bulletList");
-  }, []);
-
-  useEffect(() => {
-    editor.on("selectionUpdate", setActiveType);
-    return () => {
-      editor.off("selectionUpdate", setActiveType);
-    };
-  }, [editor]);
-
-  return (
-    <Select
-      required
-      size="S"
-      placeholder="Text Style"
-      onChange={onSelect}
-      value={selectedType}
-    >
-      <Option value={"paragraph"}>Paragraph</Option>
-      <Option value={"h1"}>Heading 1</Option>
-      <Option value={"h2"}>Heading 2</Option>
-      <Option value={"h3"}>Heading 3</Option>
-      <Option value={"h4"}>Heading 4</Option>
-      <Option value={"blockquote"}>Quote</Option>
-      <Option value={"orderedList"}>Ordered list</Option>
-      <Option value={"bulletList"}>Bullet list</Option>
-    </Select>
-  );
-}
-
-type DialogProps = {
-  editor: Editor;
-  onExit: () => void;
-};
-
-function InsertLinkDialog({ editor, onExit }: DialogProps) {
-  const [href, setHref] = useState<string>("");
-  const [newTab, setNewTab] = useState<boolean>(false);
-  const [shouldRemove, setShouldRemove] = useState<boolean>(false);
-
-  const onClose = useCallback(() => {
-    setHref("");
-    setNewTab(false);
-    onExit();
-  }, []);
-
-  const onInsertLink = useCallback(() => {
-    if (!href || shouldRemove) {
-      editor.chain().focus().extendMarkRange("link").unsetLink().run();
-    } else {
-      editor
-        .chain()
-        .focus()
-        .extendMarkRange("link")
-        .setLink({ href, target: newTab ? "_blank" : "_self" })
-        .run();
-    }
-
-    onClose();
-  }, [editor, href]);
-
-  useEffect(() => {
-    if (editor.isActive("link")) {
-      const { href, target } = editor.getAttributes("link") as {
-        href: string;
-        target: string;
-      };
-      setHref(href);
-      setNewTab(target === "_blank");
-      setShouldRemove(true);
-    }
-
-    return () => {
-      setHref("");
-      setNewTab(false);
-      setShouldRemove(false);
-    };
-  }, []);
-
-  return (
-    <Dialog onClose={onClose} title="Insert link" isOpen={true}>
-      <DialogBody>
-        <Stack spacing={2}>
-          <TextInput
-            label="Link URL"
-            placeholder="Write or paste the url here"
-            name="url"
-            onChange={(e: ChangeEvent<HTMLInputElement>) => {
-              setHref(e.target.value);
-              setShouldRemove(false);
-            }}
-            value={href}
-            aria-label="URL"
-          />
-          <Checkbox
-            value={newTab}
-            onValueChange={(v: boolean) => {
-              setNewTab(v);
-              setShouldRemove(false);
-            }}
-          >
-            Open in new tab
-          </Checkbox>
-        </Stack>
-      </DialogBody>
-      <DialogFooter
-        startAction={
-          <Button onClick={onClose} variant="tertiary">
-            Cancel
-          </Button>
-        }
-        endAction={
-          <Button
-            onClick={() => onInsertLink()}
-            variant={shouldRemove ? "danger-light" : "success-light"}
-          >
-            {shouldRemove ? "Remove" : "Insert"} Link
-          </Button>
-        }
-      />
-    </Dialog>
-  );
-}
-
-function InsertYouTubeDialog({ editor, onExit }: DialogProps) {
-  const [src, setSrc] = useState("");
-  const [fixedDimensions, setFixedDimensions] = useState(false);
-  const [height, setHeight] = useState<number | string>(480);
-  const [width, setWidth] = useState<number | string>(640);
-
-  const onInsert = useCallback(
-    ({
-      src,
-      height,
-      width,
-      fixedDimensions,
-    }: {
-      src: string;
-      height: number | string;
-      width: number | string;
-      fixedDimensions: boolean;
-    }) => {
-      try {
-        editor
-          .chain()
-          .focus()
-          .setYoutubeVideo({
-            src,
-            width: fixedDimensions
-              ? typeof width === "number"
-                ? width
-                : parseInt(width, 10)
-              : undefined,
-            height: fixedDimensions
-              ? typeof height === "number"
-                ? height
-                : parseInt(height, 10)
-              : undefined,
-          })
-          .run();
-        onExit();
-      } catch (error) {
-        console.error(error);
-      }
-    },
-    [editor, onExit]
-  );
-
-  return (
-    <Dialog onClose={onExit} title="Insert YouTube embed" isOpen={true}>
-      <DialogBody>
-        <Stack spacing={2}>
-          <TextInput
-            label="YouTube URL"
-            placeholder="Add YouTube URL"
-            name="url"
-            value={src}
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              setSrc(e.target.value)
-            }
-            aria-label="YouTube URL"
-          />
-          <Box style={{ marginTop: "20px" }}>
-            <Checkbox
-              value={fixedDimensions}
-              onValueChange={(v: boolean) => {
-                setFixedDimensions(v);
-              }}
-            >
-              Set Fixed Dimensions
-            </Checkbox>
-          </Box>
-          <Stack
-            horizontal={true}
-            spacing={2}
-            style={
-              !fixedDimensions
-                ? {
-                    pointerEvents: "none",
-                    opacity: 0.5,
-                    filter: "grayscale(1)",
-                  }
-                : undefined
-            }
-          >
-            <TextInput
-              label="Width"
-              type="number"
-              placeholder="Add Width"
-              name="width"
-              value={width}
-              onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                setWidth(e.target.value)
-              }
-              aria-label="YouTube Video Width"
-            />
-            <TextInput
-              label="Height"
-              type="number"
-              placeholder="Add Height"
-              name="height"
-              value={height}
-              onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                setHeight(e.target.value)
-              }
-              aria-label="YouTube Video Height"
-            />
-          </Stack>
-        </Stack>
-      </DialogBody>
-      <DialogFooter
-        startAction={
-          <Button onClick={onExit} variant="tertiary">
-            Cancel
-          </Button>
-        }
-        endAction={
-          <Button
-            disabled={src.length === 0}
-            onClick={() => onInsert({ src, width, height, fixedDimensions })}
-            variant="success-light"
-          >
-            Insert YouTube Embed
-          </Button>
-        }
-      />
-    </Dialog>
-  );
-}
-
-const ExtraIcons = {
-  YouTube: (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="1rem"
-      height="1rem"
-      viewBox="0 0 24 24"
-      fill="none"
-      className="extra-icon"
-    >
-      <path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17" />
-      <path id="bulb" d="m10 15 5-3-5-3z" />
-    </svg>
-  ),
-};
